@@ -1,16 +1,6 @@
-#include <U8x8lib.h>
-#include <U8g2lib.h>
-
-const uint8_t CLOCK_PIN = 13,
-              DATA_PIN = 11,
-              CS_PIN = 10,
-              DC_PIN = 9,
-              RESET_PIN = 8;
-
-U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
-  U8G2_PCD8544_84X48_1_4W_HW_SPI(U8G2_R0, CS_PIN, DC_PIN, RESET_PIN);
-
-static unsigned char bits[] = {
+#define initial_screen_width 84
+#define initial_screen_height 48
+static unsigned char initial_screen_bits[] = {
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
    0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02,
@@ -55,41 +45,3 @@ static unsigned char bits[] = {
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-
-int mode = 0;
-
-void setup() {
-
-  pinMode(5, INPUT_PULLUP);
-  pinMode(6, INPUT_PULLUP);
-  pinMode(7, INPUT_PULLUP);
-  u8g2.begin();
-  u8g2.setContrast(135);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-  u8g2.firstPage();
-  do { draw(); } while ( u8g2.nextPage() );
-  if( mode == 0){
-    if (digitalRead(6) == LOW){
-        mode = 1;
-      }
-    }
-  delay(100);
-}
-
-void draw() {
-  switch (mode){
-  case 0:
-    //first screen
-    u8g2.drawXBM( 0, 0, 84, 48, bits);
-    break;
-  case 1:
-    //main menu
-    u8g2.setFont(u8g2_font_ncenB14_tr);
-    u8g2.drawStr(0,15,"Hello");
-    u8g2.drawStr(0,35,"World!");
-    break;
-  }
-}
