@@ -3,13 +3,20 @@
 
 const uint8_t CLOCK_PIN = 13,
               DATA_PIN = 11,
-              CS_PIN = 10,
+              CE_PIN = 10,
               DC_PIN = 9,
               RESET_PIN = 8;
 
-U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
-  U8G2_PCD8544_84X48_1_4W_HW_SPI(U8G2_R0, CS_PIN, DC_PIN, RESET_PIN);
+const uint8_t BL_PIN = 4,
+              BTN_A_PIN = 5,
+              BTN_B_PIN = 6,
+              BTN_C_PIN = 7;
 
+//Definition of display to use, here is Nokia 5110 84x48
+U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
+  U8G2_PCD8544_84X48_1_4W_HW_SPI(U8G2_R0, CE_PIN, DC_PIN, RESET_PIN);
+
+//Initial Screen
 const static unsigned char bits[] = {
    0x00, 0x02, 0x00, 0x01, 0x02, 0x00, 0x02, 0x02, 0x00, 0x02, 0x01, 0x00,
    0x02, 0x11, 0x00, 0x04, 0x01, 0x00, 0x84, 0x00, 0x00, 0x88, 0x00, 0x1c,
@@ -20,7 +27,8 @@ const static unsigned char bits[] = {
    0x88, 0xf1, 0x24, 0x90, 0x00, 0x22, 0xf0, 0x00, 0x1e
    };
 
-static char menu_names[][10] = {
+//Names of menu options, the sprites are located on sprites.h
+static const char menu_names[][10] = {
   "cxefa",
   "stato",
   "mangxo",
@@ -33,40 +41,43 @@ static char menu_names[][10] = {
   "posxto",
   "agordo"
   };
+const int menu_len = 11;          //lenght of menu array, important for loops
 
-int menu_len = 11;
-
-unsigned char bits_buff[100];
-unsigned char selected_bits[100];
-int mode = 0;
-int selected = 0;
-bool backlight = true;
+//Global Variables
+unsigned char bits_buff[100];     //menu sprite buffer variable
+unsigned char selected_bits[100]; //temporal sprite of selected menu option
+int selected = 0;                 //current menu option selected
+bool backlight = true;            //status of backlight
+int mode = 0;                     /* stage of game:
+                                   * 0: initial screen
+                                   * 1: main menu view
+                                   * 2: settings
+                                   */
 
 void setup() {
-  pinMode(4, OUTPUT);
-  pinMode(5, INPUT_PULLUP);
-  pinMode(6, INPUT_PULLUP);
-  pinMode(7, INPUT_PULLUP);  
+  pinMode(BL_PIN, OUTPUT);
+  pinMode(BTN_A_PIN, INPUT_PULLUP);
+  pinMode(BTN_B_PIN, INPUT_PULLUP);
+  pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
-  u8g2.setContrast(135);
+  u8g2.setContrast(145);
 }
 
 void loop() {
-  digitalWrite(4, backlight?HIGH:LOW);
-  // put your main code here, to run repeatedly:
+  digitalWrite(BL_PIN, backlight?HIGH:LOW);
   u8g2.firstPage();
   do { draw(); } while ( u8g2.nextPage() );
 
-    if (digitalRead(5) == LOW){
+    if (digitalRead(BTN_A_PIN) == LOW){
         if( mode == 0) mode = 1; else{
         selected--;
         if (selected < 0 ) selected = 0; }
       }
-    if (digitalRead(6) == LOW){
+    if (digitalRead(BTN_B_PIN) == LOW){
         if( mode == 0) mode = 1;
         
       }
-    if (digitalRead(7) == LOW){
+    if (digitalRead(BTN_C_PIN) == LOW){
         if( mode == 0) mode = 1; else{
         selected++;
         if (selected >= menu_len ) selected = menu_len - 1; }
@@ -77,7 +88,7 @@ void loop() {
 void draw() {
   switch (mode){
   case 0:
-    //first screen
+    //render first screen
     //u8g2.drawXBM( 5, 7, 70, 36, bits);
     u8g2.drawXBM( 29, 12, 22, 27, bits); //mini
     break;
