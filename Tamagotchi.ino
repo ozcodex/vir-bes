@@ -99,6 +99,9 @@ void loop() {
             contrast = 100;
             }
         }
+        if (sub_selected == 2) {
+          mode = 1;
+        }
         break;
       
     } 
@@ -114,7 +117,7 @@ void loop() {
         if (selected >= menu_len ) selected = menu_len - 1;
         break;
       case 11:
-        int sub_len = 2;
+        int sub_len = 3;
         sub_selected++;
         if (sub_selected >= sub_len ) sub_selected = sub_len -1;
         break;
@@ -194,6 +197,11 @@ void draw_options(){
   u8g2.print(sub_selected == 1?">":"");
   u8g2.print("Kontrasto: ");
   u8g2.print(contrast);
+  
+  //last option, exit
+  u8g2.setCursor(0, 28);
+  u8g2.print(sub_selected == 2?">":"");
+  u8g2.print("Forlasi!");
   }
 
 //draws help text in the last line
