@@ -67,11 +67,13 @@ const int menu_len = 11;          //lenght of menu array, important for loops
 unsigned char bits_buff[100];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int selected = 0;                 //current menu option selected
+int sub_selected = 0;
 bool backlight = true;            //status of backlight
+int contrast = 135;
 int mode = 0;                     /* stage of game:
                                    * 0: initial screen
                                    * 1: main menu view
-                                   * 2: settings
+                                   * 11: settings
                                    */
 
 void setup() {
@@ -80,34 +82,75 @@ void setup() {
   pinMode(BTN_B_PIN, INPUT_PULLUP);
   pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
-  u8g2.setContrast(145);
+  u8g2.setContrast(contrast);
 }
 
 void loop() {
   //Write the backlight status
   digitalWrite(BL_PIN, backlight?HIGH:LOW);
 
+  //Configure graphics
+  u8g2.setFont(u8g2_font_5x7_tr);
+  u8g2.setFontPosTop();
+  u8g2.setContrast(contrast);
   //Manage graphics
   u8g2.firstPage();
   do { draw(); } while ( u8g2.nextPage() );
 
   //Read Button A Input
   if (digitalRead(BTN_A_PIN) == LOW){
-      if( mode == 0) mode = 1; else{
-      selected--;
-      if (selected < 0 ) selected = 0; }
+    switch (mode){
+      case 0:
+        mode = 1;
+        break;
+      case 1:
+        selected--;
+        if (selected < 0 ) selected = 0;
+        break;
+      case 11:
+        sub_selected--;
+        if (sub_selected < 0 ) sub_selected = 0;
+        break;
     }
+  }
   //Read Button B Input
   if (digitalRead(BTN_B_PIN) == LOW){
-      if( mode == 0) mode = 1;
+    switch (mode){
+      case 0:
+        mode = 1;
+        break;
+      case 1:
+        mode = selected + 1;
+        break;
+      case 11:
+        if (sub_selected == 0) backlight = !backlight;
+        if (sub_selected == 1) {
+          contrast+=5;
+          if (contrast > 200){
+            contrast = 100;
+            }
+        }
+        break;
       
-    }
+    } 
+  }
   //Read Button C Input
   if (digitalRead(BTN_C_PIN) == LOW){
-      if( mode == 0) mode = 1; else{
-      selected++;
-      if (selected >= menu_len ) selected = menu_len - 1; }
+    switch (mode){
+      case 0:
+        mode = 1;
+        break;
+      case 1:
+        selected++;
+        if (selected >= menu_len ) selected = menu_len - 1;
+        break;
+      case 11:
+        int sub_len = 2;
+        sub_selected++;
+        if (sub_selected >= sub_len ) sub_selected = sub_len -1;
+        break;
     }
+  }
   //underclocking the arduino 
   delay(180);
 }
@@ -124,6 +167,14 @@ void draw() {
   case 1:
     //Render main menu
     draw_menu();
+    //Render the help text
+    draw_help();
+    break;
+  case 11:
+    //Render main menu
+    draw_menu();
+    //Render options
+    draw_options();
     break;
   }
 }
@@ -148,9 +199,24 @@ void draw_menu(){
     //print each menu option visible
     u8g2.drawXBM( (i-offset)*10, 0, 10, 10, selected == i? selected_bits:bits_buff);
   }
-  //draw the help text
-  u8g2.setFont(u8g2_font_5x7_tr);
-  u8g2.setFontPosTop();
+}
+
+//Options draw function
+void draw_options(){
+  //first option, backlight configuration
+  u8g2.setCursor(0, 12);
+  u8g2.print(sub_selected == 0?">":"");
+  u8g2.print("Lumo: ");
+  u8g2.print(backlight?"on":"off");
+  //second option, contrast configuration
+  u8g2.setCursor(0, 20);
+  u8g2.print(sub_selected == 1?">":"");
+  u8g2.print("Kontrasto: ");
+  u8g2.print(contrast);
+  }
+
+//draws help text in the last line
+void draw_help(){
   u8g2.drawStr(0,40,menu_names[selected]);
 }
 
