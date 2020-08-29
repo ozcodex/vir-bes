@@ -96,9 +96,9 @@ void loop() {
         selected--;
         if (selected < 0 ) selected = 0;
         break;
+      case 3:
       case 11:
-        sub_selected--;
-        if (sub_selected < 0 ) sub_selected = 0;
+        rotate_sub_sel_L(0);
         break;
     }
   }
@@ -110,6 +110,7 @@ void loop() {
         break;
       case 1:
       case 2:
+        sub_selected = 0;
         mode = selected + 1;
         break;
       case 11:
@@ -138,11 +139,12 @@ void loop() {
         selected++;
         if (selected >= menu_len ) selected = menu_len - 1;
         break;
+      case 3:
+        rotate_sub_sel_R(4);
+      break;
       case 11:
-        int sub_len = 3;
-        sub_selected++;
-        if (sub_selected >= sub_len ) sub_selected = sub_len -1;
-        break;
+        rotate_sub_sel_R(2);
+      break;
     }
   }
 }
@@ -165,6 +167,11 @@ void draw() {
   case 2:
     draw_menu();
     draw_status();
+    draw_help();
+    break;
+  case 3:
+    draw_menu();
+    draw_foods();
     draw_help();
     break;
   case 11:

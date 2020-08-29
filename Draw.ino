@@ -86,6 +86,23 @@ void draw_status(){
 
 }
 
+//Draw food options
+void draw_foods(){
+  //draw foods
+  memcpy_P(bits_buff, foods[0], 100);
+  u8g2.drawXBM( 5, 21, 10, 10, bits_buff);
+  memcpy_P(bits_buff, foods[1], 100);
+  u8g2.drawXBM( 21, 21, 10, 10, bits_buff);
+  memcpy_P(bits_buff, foods[2], 100);
+  u8g2.drawXBM( 37, 21, 10, 10, bits_buff);
+  memcpy_P(bits_buff, foods[3], 100);
+  u8g2.drawXBM( 53, 21, 10, 10, bits_buff);
+  memcpy_P(bits_buff, foods[4], 100);
+  u8g2.drawXBM( 69, 21, 10, 10, bits_buff);
+  //draw rectangle arround selected option
+  u8g2.drawRFrame(3+16*sub_selected,19,14,14,2);
+}
+
 //Options draw function
 void draw_options(){
   //first option, backlight configuration
@@ -115,6 +132,8 @@ void draw_help(){
   //write the name of selected option
   u8g2.setCursor(1, 40);
   u8g2.print(menu_names[selected]);
+  u8g2.setCursor(75, 40);
+  //u8g2.print(sub_selected);
   //reset the draw mode and color
   u8g2.setFontMode(0);
   u8g2.setDrawColor(1);

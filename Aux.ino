@@ -27,3 +27,15 @@ int get_offset(int sel){
     offset = max_offset;
   return offset;
 }
+
+//Rotate sub_selected to left
+void rotate_sub_sel_L(int minv){
+  sub_selected--;
+  if (sub_selected < minv ) sub_selected = minv;
+}
+
+//Rotate sub_selected to right
+void rotate_sub_sel_R(int maxv){
+  sub_selected++;
+  if (sub_selected >= maxv ) sub_selected = maxv;
+}
