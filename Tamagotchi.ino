@@ -34,9 +34,9 @@ const int menu_len = 11;          //lenght of menu array, important for loops
 
 static const char food_names[][12] = {
   "supo",
-  "kokido",
   "ananaso",
-  "kuko",
+  "tasokuko",
+  "kokido",
   "hamburgero"
   };
   
@@ -53,8 +53,17 @@ int contrast = 135;
 int mode = 0;                     /* stage of game:
                                    * 0: initial screen
                                    * 1: main menu view
+                                   * 2: status view
+                                   * 3: food view
                                    * 11: settings
                                    */
+//Virbes data:
+//status variables
+int hungry = 7;   // max: 30
+int joy = 15;     // max: 30 
+int age = 23;     // max: 999
+int weight = 85;  // max: 999
+int health = 3;   // max: 6
 
 void setup() {
   pinMode(BL_PIN, OUTPUT);
@@ -120,6 +129,18 @@ void loop() {
       case 2:
         sub_selected = 0;
         mode = selected + 1;
+        break;
+      case 3:
+        hungry += sub_selected*2;
+        if (hungry > 30){
+          hungry = 30;
+          health--;
+          if (health < -1){
+            health = -1;
+          }
+        }
+        //return to main menu
+        mode = 1;
         break;
       case 11:
         if (sub_selected == 0) backlight = !backlight;

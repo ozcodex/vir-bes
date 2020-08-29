@@ -42,13 +42,6 @@ void draw_virbes(){
 
 //Status of tamagotchi
 void draw_status(){
-  //Temporary: status variables
-  int hungry = 7;   // max: 30
-  int joy = 15;     // max: 30 
-  int age = 23;     // max: 999
-  int weight = 85;  // max: 999
-  int health = 3;   // max: 6
-  
   //Draw Text
   u8g2.setCursor(3, 11);
   u8g2.print("sata");
