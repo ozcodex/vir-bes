@@ -192,7 +192,7 @@ void draw_menu(){
 }
 //Status of tamagotchi
 void draw_status(){
-  //Draw text
+  //Draw Text
   u8g2.setCursor(3, 11);
   u8g2.print("sata");
   u8g2.setCursor(39, 12);
@@ -203,22 +203,29 @@ void draw_status(){
   u8g2.print("gxoja");
   u8g2.setCursor(39, 29);
   u8g2.print("sana");
+  //Draw Lines
+  u8g2.drawLine(2, 20, 2, 23);
+  u8g2.drawLine(3, 23, 33, 23);
+  u8g2.drawLine(2, 34, 2, 37);
+  u8g2.drawLine(3, 37, 33, 37);
+  //draw Boxes
+  u8g2.drawRFrame(37,13,23,16,3);
+  u8g2.drawRFrame(61,13,23,16,3);
+  //draw Bars
+  u8g2.drawBox(4,20,30,2);
+  u8g2.drawBox(4,34,30,2);
   //Draw Numbers
   u8g2.setCursor(42, 20);
   u8g2.print("999");
   u8g2.setCursor(65, 20);
   u8g2.print("999");
-  //Draw lines
-  u8g2.drawLine(2, 20, 2, 23);
-  u8g2.drawLine(3, 23, 33, 23);
-  u8g2.drawLine(2, 34, 2, 37);
-  u8g2.drawLine(3, 37, 33, 37);
-  //draw boxes
-  u8g2.drawRFrame(37,13,23,16,3);
-  u8g2.drawRFrame(61,13,23,16,3);
-  //draw bars
-  u8g2.drawBox(4,20,30,2);
-  u8g2.drawBox(4,34,30,2);
+  //Draw Hearts
+  memcpy_P(bits_buff, hearts[2], 49);
+  u8g2.drawXBM( 60, 31, 7, 7, bits_buff);
+  memcpy_P(bits_buff, hearts[1], 49);
+  u8g2.drawXBM( 68, 31, 7, 7, bits_buff);
+  memcpy_P(bits_buff, hearts[0], 49);
+  u8g2.drawXBM( 76, 31, 7, 7, bits_buff);
 
 }
 
