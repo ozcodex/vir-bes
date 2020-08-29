@@ -30,7 +30,6 @@ static const char menu_names[][10] = {
   "posxto",
   "agordo"
   };
-const int menu_len = 11;          //lenght of menu array, important for loops
 
 static const char food_names[][12] = {
   "supo",
@@ -41,7 +40,8 @@ static const char food_names[][12] = {
   };
   
 //Global Variables
-unsigned long up_time = 0;            //time elapsed since turn-on
+const int menu_len = 11;          //lenght of menu array, important for loops
+unsigned long up_time = 0;        //time elapsed since turn-on
 unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int selected = 0;                 //current menu option selected
@@ -108,12 +108,11 @@ void loop() {
   if (pull_down[0] && btn_clk_counter[0] == 1){
     switch (mode){
       case 0:
-        mode = 1;
+        back_to_main();
         break;
       case 1:
       case 2:
-        selected--;
-        if (selected < 0 ) selected = 0;
+        selected = rotate_sel_L(0,selected);
         break;
       case 3:
       case 11:
@@ -125,38 +124,18 @@ void loop() {
   if (pull_down[1]  && btn_clk_counter[1] == 1){
     switch (mode){
       case 0:
-        mode = 1;
+        back_to_main();
         break;
       case 1:
       case 2:
-        sub_selected = 0;
-        mode = selected + 1;
+        select_menu_option();
         break;
       case 3:
-        hungry += sub_selected*2;
-        if (hungry > 30){
-          hungry = 30;
-          health--;
-          if (health < -1){
-            health = -1;
-          }
-        }
-        //return to main menu
-        mode = 1;
-        selected = 0;
+        eat_food(sub_selected);
+        back_to_main();
         break;
       case 11:
-        if (sub_selected == 0) backlight = !backlight;
-        if (sub_selected == 1) {
-          contrast+=5;
-          if (contrast > 200){
-            contrast = 100;
-            }
-        }
-        if (sub_selected == 2) {
-          mode = 1;
-          selected = 0;
-        }
+        change_settings(sub_selected);
         break;
       
     } 
@@ -165,12 +144,11 @@ void loop() {
   if (pull_down[2]  && btn_clk_counter[2] == 1){
     switch (mode){
       case 0:
-        mode = 1;
+        back_to_main();
         break;
       case 1:
       case 2:
-        selected++;
-        if (selected >= menu_len ) selected = menu_len - 1;
+        selected = rotate_sel_R(menu_len - 1,selected);
         break;
       case 3:
         sub_selected = rotate_sel_R(4,sub_selected);
