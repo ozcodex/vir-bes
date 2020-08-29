@@ -89,20 +89,7 @@ void loop() {
   do { draw(); } while ( u8g2.nextPage() );
 
   //Read buttons
-  pull_down[0] = digitalRead(BTN_A_PIN) == LOW;
-  pull_down[1] = digitalRead(BTN_B_PIN) == LOW;
-  pull_down[2] = digitalRead(BTN_C_PIN) == LOW;
-  //reset buttons
-  for( int i = 0; i < 3; i++ ){
-    //count while the button is pressed to avoid fast repeating actions
-    if (pull_down[i]) {
-      btn_clk_counter[i] += 1;
-    }else{
-      btn_clk_counter[i] = 0;
-      }
-    //in long press reset counter to take action
-    if (btn_clk_counter[i] > 10) btn_clk_counter[i] = 0;
-  }
+  read_buttons();
 
   //Trigger Button A Action
   if (pull_down[0] && btn_clk_counter[0] == 1){

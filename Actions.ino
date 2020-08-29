@@ -32,3 +32,21 @@ void change_settings(int index){
     back_to_main();
   }  
 }
+
+void read_buttons(){
+  int button_timeout = 10;
+  pull_down[0] = digitalRead(BTN_A_PIN) == LOW;
+  pull_down[1] = digitalRead(BTN_B_PIN) == LOW;
+  pull_down[2] = digitalRead(BTN_C_PIN) == LOW;
+  //reset buttons
+  for( int i = 0; i < 3; i++ ){
+    //count while the button is pressed to avoid fast repeating actions
+    if (pull_down[i]) {
+      btn_clk_counter[i] += 1;
+    }else{
+      btn_clk_counter[i] = 0;
+      }
+    //in long press reset counter to take action
+    if (btn_clk_counter[i] > button_timeout) btn_clk_counter[i] = 0;
+  }
+}
