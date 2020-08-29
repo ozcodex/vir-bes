@@ -143,6 +143,7 @@ void loop() {
         }
         //return to main menu
         mode = 1;
+        selected = 0;
         break;
       case 11:
         if (sub_selected == 0) backlight = !backlight;
@@ -154,6 +155,7 @@ void loop() {
         }
         if (sub_selected == 2) {
           mode = 1;
+          selected = 0;
         }
         break;
       
@@ -198,12 +200,12 @@ void draw() {
     break;
   case 3:
     draw_menu(selected);
-    draw_foods();
+    draw_foods(sub_selected);
     draw_help();
     break;
   case 11:
     draw_menu(selected);
-    draw_options();
+    draw_options(sub_selected);
     break;
   }
 }

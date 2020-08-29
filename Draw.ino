@@ -25,7 +25,7 @@ void draw_menu(int pointer){
     //load sprites from PROGMEM
     memcpy_P(bits_buff, menu[i], 100);
     //print each menu option visible
-    u8g2.drawXBM( (i-offset)*10, 0, 10, 10, selected == i? selected_bits:bits_buff);
+    u8g2.drawXBM( (i-offset)*10, 0, 10, 10, pointer == i? selected_bits:bits_buff);
   }
 }
 
@@ -79,7 +79,7 @@ void draw_status(){
 }
 
 //Draw food options
-void draw_foods(){
+void draw_foods(int pointer){
   //draw foods
   memcpy_P(bits_buff, foods[0], 100);
   u8g2.drawXBM( 5, 21, 10, 10, bits_buff);
@@ -92,19 +92,19 @@ void draw_foods(){
   memcpy_P(bits_buff, foods[4], 100);
   u8g2.drawXBM( 69, 21, 10, 10, bits_buff);
   //draw rectangle arround selected option
-  u8g2.drawRFrame(3+16*sub_selected,19,14,14,2);
+  u8g2.drawRFrame(3+16*pointer,19,14,14,2);
 }
 
 //Options draw function
-void draw_options(){
+void draw_options(int pointer){
   //first option, backlight configuration
   u8g2.setCursor(0, 12);
-  u8g2.print(sub_selected == 0?">":"");
+  u8g2.print(pointer == 0?">":"");
   u8g2.print("Lumo: ");
   u8g2.print(backlight?"on":"off");
   //second option, contrast configuration
   u8g2.setCursor(0, 20);
-  u8g2.print(sub_selected == 1?">":"");
+  u8g2.print(pointer == 1?">":"");
   u8g2.print("Kontrasto: ");
   u8g2.print(contrast);
   
