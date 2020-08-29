@@ -36,7 +36,10 @@ const int menu_len = 11;          //lenght of menu array, important for loops
 unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int selected = 0;                 //current menu option selected
-int sub_selected = 0;
+int sub_selected = 0;             //for sub menus, the selected option
+bool pull_down[] = {false,false,false};
+int btn_clk_counter[] = {0,0,0};
+//configuration variables
 bool backlight = true;            //status of backlight
 int contrast = 135;
 int mode = 0;                     /* stage of game:
@@ -66,8 +69,24 @@ void loop() {
   u8g2.firstPage();
   do { draw(); } while ( u8g2.nextPage() );
 
-  //Read Button A Input
-  if (digitalRead(BTN_A_PIN) == LOW){
+  //Read buttons
+  pull_down[0] = digitalRead(BTN_A_PIN) == LOW;
+  pull_down[1] = digitalRead(BTN_B_PIN) == LOW;
+  pull_down[2] = digitalRead(BTN_C_PIN) == LOW;
+  //reset buttons
+  for( int i = 0; i < 3; i++ ){
+    //count while the button is pressed to avoid fast repeating actions
+    if (pull_down[i]) {
+      btn_clk_counter[i] += 1;
+    }else{
+      btn_clk_counter[i] = 0;
+      }
+    //in long press reset counter to take action
+    if (btn_clk_counter[i] > 10) btn_clk_counter[i] = 0;
+  }
+
+  //Trigger Button A Action
+  if (pull_down[0] && btn_clk_counter[0] == 1){
     switch (mode){
       case 0:
         mode = 1;
@@ -83,8 +102,8 @@ void loop() {
         break;
     }
   }
-  //Read Button B Input
-  if (digitalRead(BTN_B_PIN) == LOW){
+  //Trigger Button B Action
+  if (pull_down[1]  && btn_clk_counter[1] == 1){
     switch (mode){
       case 0:
         mode = 1;
@@ -108,8 +127,8 @@ void loop() {
       
     } 
   }
-  //Read Button C Input
-  if (digitalRead(BTN_C_PIN) == LOW){
+  //Trigger Button C Action
+  if (pull_down[2]  && btn_clk_counter[2] == 1){
     switch (mode){
       case 0:
         mode = 1;
@@ -126,8 +145,6 @@ void loop() {
         break;
     }
   }
-  //underclocking the arduino 
-  delay(180);
 }
 
 //Main Draw Function
