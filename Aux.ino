@@ -12,5 +12,18 @@ void build_selected(){
   //invert each bit
   for(int i=0;i<100;i++){
     selected_bits[i] = ~bits_buff[i];
-    }
   }
+}
+
+//Define the offset to scroll menu
+int get_offset(int sel){
+  int max_items = 8;
+  int middle_item = 4;
+  int offset = 0;
+  int max_offset = menu_len - max_items;
+  if (sel > middle_item)
+    offset += sel-middle_item;
+  if (offset > max_offset )
+    offset = max_offset;
+  return offset;
+}

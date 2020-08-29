@@ -33,7 +33,7 @@ static const char menu_names[][10] = {
 const int menu_len = 11;          //lenght of menu array, important for loops
 
 //Global Variables
-unsigned char bits_buff[100];     //menu sprite buffer variable
+unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int selected = 0;                 //current menu option selected
 int sub_selected = 0;
@@ -140,6 +140,8 @@ void draw() {
   case 1:
     //Render main menu
     draw_menu();
+    //Render the character
+    draw_virbes();
     //Render the help text
     draw_help();
     break;

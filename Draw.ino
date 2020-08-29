@@ -20,12 +20,7 @@ void draw_menu(){
   //load the inverted sprite of selected optioon
   build_selected();
   //define menu render offset (for scrolling)
-  int offset = 0;
-  int max_offset = menu_len - 8;
-  if (selected > 4)
-    offset += selected-4;
-  if (offset > max_offset )
-    offset = max_offset;
+  int offset = get_offset(selected);
   //render menu options
   for(int i = offset;i<menu_len;i++){
     //load sprites from PROGMEM
@@ -33,6 +28,16 @@ void draw_menu(){
     //print each menu option visible
     u8g2.drawXBM( (i-offset)*10, 0, 10, 10, selected == i? selected_bits:bits_buff);
   }
+}
+
+//character draw
+void draw_virbes(){
+  int x_off= 0;
+  int y_off= 0;
+  memcpy_P(bits_buff, lex[0], 400);
+  u8g2.drawXBM( 32+x_off, 17+y_off, 20, 20, bits_buff);
+  memcpy_P(bits_buff, lex_face[0], 81);
+  u8g2.drawXBM( 37+x_off, 22+y_off, 9, 9, bits_buff);
 }
 
 //Status of tamagotchi
