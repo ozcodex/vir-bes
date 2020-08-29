@@ -73,6 +73,7 @@ void loop() {
         mode = 1;
         break;
       case 1:
+      case 2:
         selected--;
         if (selected < 0 ) selected = 0;
         break;
@@ -89,6 +90,7 @@ void loop() {
         mode = 1;
         break;
       case 1:
+      case 2:
         mode = selected + 1;
         break;
       case 11:
@@ -113,6 +115,7 @@ void loop() {
         mode = 1;
         break;
       case 1:
+      case 2:
         selected++;
         if (selected >= menu_len ) selected = menu_len - 1;
         break;
@@ -140,10 +143,13 @@ void draw() {
     //Render the help text
     draw_help();
     break;
-  case 11:
-    //Render main menu
+  case 2:
     draw_menu();
-    //Render options
+    draw_status();
+    draw_help();
+    break;
+  case 11:
+    draw_menu();
     draw_options();
     break;
   }
@@ -184,6 +190,32 @@ void draw_menu(){
     u8g2.drawXBM( (i-offset)*10, 0, 10, 10, selected == i? selected_bits:bits_buff);
   }
 }
+//Status of tamagotchi
+void draw_status(){
+  //Draw text
+  u8g2.setCursor(3, 11);
+  u8g2.print("sata");
+  u8g2.setCursor(39, 13);
+  u8g2.print("agxo");
+  u8g2.setCursor(62, 13);
+  u8g2.print("pezo");
+  u8g2.setCursor(3, 25);
+  u8g2.print("gxoja");
+  u8g2.setCursor(39, 31);
+  u8g2.print("sana");
+  //Draw Numbers
+  u8g2.setCursor(42, 21);
+  u8g2.print("999");
+  u8g2.setCursor(65, 21);
+  u8g2.print("999");
+  //Draw lines
+  u8g2.drawLine(2, 20, 2, 23);
+  u8g2.drawLine(3, 23, 35, 23);
+  u8g2.drawLine(2, 34, 2, 37);
+  u8g2.drawLine(3, 37, 35, 37);
+  
+
+}
 
 //Options draw function
 void draw_options(){
@@ -206,8 +238,14 @@ void draw_options(){
 
 //draws help text in the last line
 void draw_help(){
-  u8g2.setCursor(0, 40);
+  //draw black rectangle
+  u8g2.drawBox(0,40,84,48);
+  u8g2.setFontMode(1);
+  u8g2.setDrawColor(0);
+  u8g2.setCursor(1, 40);
   u8g2.print(menu_names[selected]);
+  u8g2.setFontMode(0);
+  u8g2.setDrawColor(1);
 }
 
 //Prepare the selected option to be rendered
