@@ -109,10 +109,13 @@ void draw_options(){
 void draw_help(){
   //draw black rectangle
   u8g2.drawBox(0,40,84,8);
+  //change draw mode and color for inverted
   u8g2.setFontMode(1);
   u8g2.setDrawColor(0);
+  //write the name of selected option
   u8g2.setCursor(1, 40);
   u8g2.print(menu_names[selected]);
+  //reset the draw mode and color
   u8g2.setFontMode(0);
   u8g2.setDrawColor(1);
 }
