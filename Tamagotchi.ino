@@ -73,7 +73,7 @@ void setup() {
   pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
   u8g2.setContrast(contrast);
-  up_time = millis(); //caution: max=4294967295 (49 days)
+  up_time = millis(); //caution: max=4294967295 (49 days 17 hours)
 }
 
 void loop() {
@@ -117,7 +117,7 @@ void loop() {
         break;
       case 3:
       case 11:
-        rotate_sub_sel_L(0);
+        sub_selected = rotate_sel_L(0,sub_selected);
         break;
     }
   }
@@ -171,10 +171,10 @@ void loop() {
         if (selected >= menu_len ) selected = menu_len - 1;
         break;
       case 3:
-        rotate_sub_sel_R(4);
+        sub_selected = rotate_sel_R(4,sub_selected);
       break;
       case 11:
-        rotate_sub_sel_R(2);
+        sub_selected = rotate_sel_R(2,sub_selected);
       break;
     }
   }
@@ -187,22 +187,22 @@ void draw() {
     draw_initial();
     break;
   case 1:
-    draw_menu();
+    draw_menu(selected);
     draw_virbes();
     draw_help();
     break;
   case 2:
-    draw_menu();
+    draw_menu(selected);
     draw_status();
     draw_help();
     break;
   case 3:
-    draw_menu();
+    draw_menu(selected);
     draw_foods();
     draw_help();
     break;
   case 11:
-    draw_menu();
+    draw_menu(selected);
     draw_options();
     break;
   }

@@ -6,9 +6,9 @@ int delta(int number){
 }
 
 //Prepare the selected option to be rendered
-void build_selected(){
+void build_selected(int pointer){
   //read sprite from PROGMEM
-  memcpy_P(bits_buff, menu[selected], 100);
+  memcpy_P(bits_buff, menu[pointer], 100);
   //invert each bit
   for(int i=0;i<100;i++){
     selected_bits[i] = ~bits_buff[i];
@@ -29,13 +29,15 @@ int get_offset(int sel){
 }
 
 //Rotate sub_selected to left
-void rotate_sub_sel_L(int minv){
-  sub_selected--;
-  if (sub_selected < minv ) sub_selected = minv;
+int rotate_sel_L(int minv,int pointer){
+  pointer--;
+  if (pointer < minv ) pointer = minv;
+  return pointer;
 }
 
 //Rotate sub_selected to right
-void rotate_sub_sel_R(int maxv){
-  sub_selected++;
-  if (sub_selected >= maxv ) sub_selected = maxv;
+int rotate_sel_R(int maxv,int pointer){
+  pointer++;
+  if (pointer >= maxv ) pointer = maxv;
+  return pointer;
 }

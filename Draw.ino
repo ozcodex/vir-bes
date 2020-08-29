@@ -1,4 +1,3 @@
-
 //Draw initial screen
 void draw_initial(){
   int x = 5;
@@ -14,13 +13,13 @@ void draw_initial(){
 }
 
 //Main Menu draw function
-void draw_menu(){
+void draw_menu(int pointer){
   //menu separator
   u8g2.drawLine(0, 10, 84, 10);
   //load the inverted sprite of selected optioon
-  build_selected();
+  build_selected(pointer);
   //define menu render offset (for scrolling)
-  int offset = get_offset(selected);
+  int offset = get_offset(pointer);
   //render menu options
   for(int i = offset;i<menu_len;i++){
     //load sprites from PROGMEM
