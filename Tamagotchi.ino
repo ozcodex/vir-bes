@@ -41,6 +41,7 @@ static const char food_names[][12] = {
   };
   
 //Global Variables
+unsigned long up_time = 0;            //time elapsed since turn-on
 unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int selected = 0;                 //current menu option selected
@@ -72,6 +73,7 @@ void setup() {
   pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
   u8g2.setContrast(contrast);
+  up_time = millis(); //caution: max=4294967295 (49 days)
 }
 
 void loop() {
@@ -182,15 +184,11 @@ void loop() {
 void draw() {
   switch (mode){
   case 0:
-    //Render first screen
     draw_initial();
     break;
   case 1:
-    //Render main menu
     draw_menu();
-    //Render the character
     draw_virbes();
-    //Render the help text
     draw_help();
     break;
   case 2:
