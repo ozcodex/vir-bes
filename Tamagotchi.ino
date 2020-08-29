@@ -195,25 +195,30 @@ void draw_status(){
   //Draw text
   u8g2.setCursor(3, 11);
   u8g2.print("sata");
-  u8g2.setCursor(39, 13);
+  u8g2.setCursor(39, 12);
   u8g2.print("agxo");
-  u8g2.setCursor(62, 13);
+  u8g2.setCursor(63, 12);
   u8g2.print("pezo");
   u8g2.setCursor(3, 25);
   u8g2.print("gxoja");
-  u8g2.setCursor(39, 31);
+  u8g2.setCursor(39, 29);
   u8g2.print("sana");
   //Draw Numbers
-  u8g2.setCursor(42, 21);
+  u8g2.setCursor(42, 20);
   u8g2.print("999");
-  u8g2.setCursor(65, 21);
+  u8g2.setCursor(65, 20);
   u8g2.print("999");
   //Draw lines
   u8g2.drawLine(2, 20, 2, 23);
-  u8g2.drawLine(3, 23, 35, 23);
+  u8g2.drawLine(3, 23, 33, 23);
   u8g2.drawLine(2, 34, 2, 37);
-  u8g2.drawLine(3, 37, 35, 37);
-  
+  u8g2.drawLine(3, 37, 33, 37);
+  //draw boxes
+  u8g2.drawRFrame(37,13,23,16,3);
+  u8g2.drawRFrame(61,13,23,16,3);
+  //draw bars
+  u8g2.drawBox(4,20,30,2);
+  u8g2.drawBox(4,34,30,2);
 
 }
 
@@ -239,7 +244,7 @@ void draw_options(){
 //draws help text in the last line
 void draw_help(){
   //draw black rectangle
-  u8g2.drawBox(0,40,84,48);
+  u8g2.drawBox(0,40,84,8);
   u8g2.setFontMode(1);
   u8g2.setDrawColor(0);
   u8g2.setCursor(1, 40);
