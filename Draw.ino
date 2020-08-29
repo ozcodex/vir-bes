@@ -129,9 +129,19 @@ void draw_help(){
   //change draw mode and color for inverted
   u8g2.setFontMode(1);
   u8g2.setDrawColor(0);
-  //write the name of selected option
+  //set the cursor in position
   u8g2.setCursor(1, 40);
-  u8g2.print(menu_names[selected]);
+  //draw matching text
+  switch(mode){
+    case 1:
+    case 2:
+      u8g2.print(menu_names[selected]);
+      break;
+    case 3:
+      u8g2.print(food_names[sub_selected]);
+  }
+  //write the name of selected option
+  
   u8g2.setCursor(75, 40);
   //u8g2.print(sub_selected);
   //reset the draw mode and color

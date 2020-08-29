@@ -32,6 +32,14 @@ static const char menu_names[][10] = {
   };
 const int menu_len = 11;          //lenght of menu array, important for loops
 
+static const char food_names[][12] = {
+  "supo",
+  "kokido",
+  "ananaso",
+  "kuko",
+  "hamburgero"
+  };
+  
 //Global Variables
 unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
