@@ -42,6 +42,7 @@ static const char food_names[][12] = {
 //Global Variables
 const int menu_len = 11;          //lenght of menu array, important for loops
 unsigned long up_time = 0;        //time elapsed since turn-on
+bool time_flags [5];              //flags for time dependant actions
 unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int selected = 0;                 //current menu option selected
@@ -63,7 +64,7 @@ int mode = 0;                     /* stage of game:
 int hungry = 15;   // max: 30
 int joy = 15;     // max: 30 
 int age = 0;     // max: 999
-int weight = 85;  // max: 999
+int weight = 25;  // max: 999
 int health = 3;   // max: 6
 
 void setup() {
@@ -87,8 +88,8 @@ void loop() {
   u8g2.firstPage();
   do { draw(); } while ( u8g2.nextPage() );
 
-  //Status
-  time_triggers();
+  //Trigger the time dependant actions, but only after start the game
+  if (mode > 0) time_triggers();
   
   //Read buttons
   read_buttons();

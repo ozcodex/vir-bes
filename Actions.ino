@@ -10,48 +10,58 @@ void select_menu_option(){
 
 //Trigger temporal related functions
 void time_triggers(){
-  //after a change switch the flag, to prevent multiple executions
-  static bool flag_1, flag_10, flag_100; 
-  int each_1 = ( up_time / 100 ) % 10;
-  int each_10 = ( up_time / 1000 ) % 10;
-  int each_100 = ( up_time / 10000 ) % 10;
-  
-  if (each_1 == 0) flag_1 = true; //reset the flag
-  if (each_10 == 0) flag_10 = true; //reset the flag
-  if (each_100 == 0) flag_100 = true; //reset the flag
-  if (each_1 == 1 and flag_1){
-    // this happens each second, and only executes once
-    flag_1 = false;
-    action_1();
-  }
-  if (each_10 == 1 and flag_10){
-    // this happens each 10 second, and only executes once
-    flag_10 = false;
-    action_10();
-  }
-  if (each_100 == 1 and flag_100){
-    // this happens each 100 second, and only executes once
-    flag_100 = false;
-    action_100();
+  for (int i = 0; i < 5; i++){
+    short time_check = int( up_time / pow(10,2+i) ) % 10;
+    if (time_check == 0) time_flags[i] = true; //restart the flag
+    if (time_check == 1 && time_flags[i]){
+      time_flags[i] = false; //change the flag for only execute once
+      time_actions(i);
+    }
   }
 }
 
-//execute each second
-void action_1(){}
-//execute each 10 seconds
-void action_10(){
-  hungry--;
-  if (hungry < 0 ) hungry = 0;
+void time_actions(int time_unit){
+   switch (time_unit){
+    case 0: // each second
+      decrease_hungry();
+    break;
+    case 1: // each 10 seconds
+      increase_age();
+    break;
+    case 2: // each 100 seconds (1.6 minutes)
+    break;
+    case 3: // each 1000 seconds (16.6 minutes)
+    break;
+    case 4: // each 10000 seconds (2.7 hours)
+    break;
+    case 5: // each 100000 sec. (27.7 hours)
+    break;
   }
-//execute each 100 seconds
-void action_100(){
+}
+
+void decrease_hungry(){
+  hungry--;
+  if (hungry < 0 ){
+    weight--;
+    hungry = 0;
+  }
+  if (weight < 10){
+    weight = 10;
+    health--;
+  }
+  if (health < 0){
+    health = 0;
+  }
+}
+
+void increase_age(){
   age++;
   if (age > 999) age = 999;
-  }
+}
 
 void eat_food(int index){
   hungry += index*2;
-  weight += index*3;
+  weight += index;
   if (hungry > 30){
     hungry = 30;
     health--;
