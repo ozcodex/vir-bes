@@ -8,6 +8,47 @@ void select_menu_option(){
   mode = selected + 1;
 }
 
+//Trigger temporal related functions
+void time_triggers(){
+  //after a change switch the flag, to prevent multiple executions
+  static bool flag_1, flag_10, flag_100; 
+  int each_1 = ( up_time / 100 ) % 10;
+  int each_10 = ( up_time / 1000 ) % 10;
+  int each_100 = ( up_time / 10000 ) % 10;
+  
+  if (each_1 == 0) flag_1 = true; //reset the flag
+  if (each_10 == 0) flag_10 = true; //reset the flag
+  if (each_100 == 0) flag_100 = true; //reset the flag
+  if (each_1 == 1 and flag_1){
+    // this happens each second, and only executes once
+    flag_1 = false;
+    action_1();
+  }
+  if (each_10 == 1 and flag_10){
+    // this happens each 10 second, and only executes once
+    flag_10 = false;
+    action_10();
+  }
+  if (each_100 == 1 and flag_100){
+    // this happens each 100 second, and only executes once
+    flag_100 = false;
+    action_100();
+  }
+}
+
+//execute each second
+void action_1(){}
+//execute each 10 seconds
+void action_10(){
+  hungry--;
+  if (hungry < 0 ) hungry = 0;
+  }
+//execute each 100 seconds
+void action_100(){
+  age++;
+  if (age > 999) age = 999;
+  }
+
 void eat_food(int index){
   hungry += index*2;
   weight += index*3;

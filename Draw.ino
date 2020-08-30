@@ -135,7 +135,7 @@ void draw_help(){
   //write the name of selected option
   
   u8g2.setCursor(75, 40);
-  //u8g2.print(sub_selected);
+  //u8g2.print(selected);
   //reset the draw mode and color
   u8g2.setFontMode(0);
   u8g2.setDrawColor(1);

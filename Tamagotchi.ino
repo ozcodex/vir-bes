@@ -60,9 +60,9 @@ int mode = 0;                     /* stage of game:
                                    */
 //Virbes data:
 //status variables
-int hungry = 7;   // max: 30
+int hungry = 15;   // max: 30
 int joy = 15;     // max: 30 
-int age = 23;     // max: 999
+int age = 0;     // max: 999
 int weight = 85;  // max: 999
 int health = 3;   // max: 6
 
@@ -73,13 +73,12 @@ void setup() {
   pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
   u8g2.setContrast(contrast);
-  up_time = millis(); //caution: max=4294967295 (49 days 17 hours)
 }
 
 void loop() {
+  up_time = millis(); //caution: max=4294967295 (49 days 17 hours)
   //Write the backlight status
   digitalWrite(BL_PIN, backlight?HIGH:LOW);
-
   //Configure graphics
   u8g2.setFont(u8g2_font_5x7_tr);
   u8g2.setFontPosTop();
@@ -88,6 +87,9 @@ void loop() {
   u8g2.firstPage();
   do { draw(); } while ( u8g2.nextPage() );
 
+  //Status
+  time_triggers();
+  
   //Read buttons
   read_buttons();
 
