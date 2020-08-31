@@ -24,6 +24,7 @@ void time_actions(int time_unit){
    switch (time_unit){
     case 0: // each second
       decrease_hungry();
+      animation_mark = animation_mark == 0?1:0;
     break;
     case 1: // each 10 seconds
       increase_age();

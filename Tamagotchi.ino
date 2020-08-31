@@ -19,6 +19,7 @@ U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 =
 //Names of menu options, the sprites are located on sprites.h
 static const char menu_names[][10] = {
   "cxefa",
+  "datumoj",
   "stato",
   "mangxo",
   "ludo",
@@ -26,6 +27,7 @@ static const char menu_names[][10] = {
   "dormu",
   "purigu",
   "lernu",
+  "eliru",
   "kuracilo",
   "posxto",
   "agordo"
@@ -40,11 +42,12 @@ static const char food_names[][12] = {
   };
   
 //Global Variables
-const int menu_len = 11;          //lenght of menu array, important for loops
+const int menu_len = 13;          //lenght of menu array, important for loops
 unsigned long up_time = 0;        //time elapsed since turn-on
 bool time_flags [5];              //flags for time dependant actions
 unsigned char bits_buff[400];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
+int animation_mark = 0; 
 int selected = 0;                 //current menu option selected
 int sub_selected = 0;             //for sub menus, the selected option
 bool pull_down[] = {false,false,false};
@@ -64,6 +67,7 @@ int mode = 0;                     /* stage of game:
 int hungry = 15;   // max: 30
 int joy = 15;     // max: 30 
 int age = 0;     // max: 999
+int height = 85;  // max: 999
 int weight = 25;  // max: 999
 int health = 3;   // max: 6
 
@@ -102,9 +106,10 @@ void loop() {
         break;
       case 1:
       case 2:
+      case 3:
         selected = rotate_sel_L(0,selected);
         break;
-      case 3:
+      case 4:
       case 11:
         sub_selected = rotate_sel_L(0,sub_selected);
         break;
@@ -118,9 +123,10 @@ void loop() {
         break;
       case 1:
       case 2:
+      case 3:
         select_menu_option();
         break;
-      case 3:
+      case 4:
         eat_food(sub_selected);
         back_to_main();
         break;
@@ -138,9 +144,10 @@ void loop() {
         break;
       case 1:
       case 2:
+      case 3:
         selected = rotate_sel_R(menu_len - 1,selected);
         break;
-      case 3:
+      case 4:
         sub_selected = rotate_sel_R(4,sub_selected);
       break;
       case 11:
@@ -163,10 +170,15 @@ void draw() {
     break;
   case 2:
     draw_menu(selected);
-    draw_status();
+    draw_data();
     draw_help();
     break;
   case 3:
+    draw_menu(selected);
+    draw_status();
+    draw_help();
+    break;
+  case 4:
     draw_menu(selected);
     draw_foods(sub_selected);
     draw_help();

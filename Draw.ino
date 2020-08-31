@@ -33,21 +33,58 @@ void draw_menu(int pointer){
 void draw_virbes(){
   int x_off= 0;
   int y_off= 0;
-  memcpy_P(bits_buff, lex[0], 400);
-  u8g2.drawXBM( 32+x_off, 17+y_off, 20, 20, bits_buff);
-  memcpy_P(bits_buff, lex_face[0], 81);
-  u8g2.drawXBM( 37+x_off, 22+y_off, 9, 9, bits_buff);
+  int off_set = animation_mark * 4;
+  //draw body
+  memcpy_P(bits_buff, lex[0+off_set], 100);
+  u8g2.drawXBM( 32+x_off, 17+y_off, 10, 10, bits_buff);
+  memcpy_P(bits_buff, lex[1+off_set], 100);
+  u8g2.drawXBM( 42+x_off, 17+y_off, 10, 10, bits_buff);
+  memcpy_P(bits_buff, lex[2+off_set], 100);
+  u8g2.drawXBM( 32+x_off, 27+y_off, 10, 10, bits_buff);
+  memcpy_P(bits_buff, lex[3+off_set], 100);
+  u8g2.drawXBM( 42+x_off, 27+y_off, 10, 10, bits_buff);
+  //draw face
+  y_off += animation_mark;
+  memcpy_P(bits_buff, lex_face[0], 49);
+  u8g2.drawXBM( 38+x_off, 24+y_off, 7, 7, bits_buff);
 }
 
-//Status of tamagotchi
+//data of virbes
+void draw_data(){
+  u8g2.setCursor(3, 12);
+  u8g2.print("Nomo: ");
+  u8g2.print("LEX ");
+  u8g2.print("1e");
+
+  u8g2.setCursor(8, 22);
+  u8g2.print("evoluo");
+  u8g2.setCursor(46, 22);
+  u8g2.print("agxo");
+
+  u8g2.drawRFrame(3,21,39,18,2);
+  u8g2.drawRFrame(44,21,23,18,2);
+
+  u8g2.setCursor(5, 29);
+  u8g2.print("maljuna");
+  u8g2.setCursor(47, 30);
+  u8g2.print(age);
+
+  memcpy_P(bits_buff, stats[1], 49); //0: male 1:female
+  u8g2.drawXBM( 70, 14, 10, 10, bits_buff);
+  memcpy_P(bits_buff, stats[5], 49); //2:disciplined 3:glutton 4:introvert 5:playful
+  u8g2.drawXBM( 70, 26, 10, 10, bits_buff);
+  
+}
+
+//Status of virbes
 void draw_status(){
   //Draw Text
   u8g2.setCursor(3, 11);
   u8g2.print("sata");
   u8g2.setCursor(39, 12);
-  u8g2.print("agxo");
+  u8g2.print("alta");
   u8g2.setCursor(63, 12);
-  u8g2.print("pezo");
+  u8g2.print("peza");
   u8g2.setCursor(3, 25);
   u8g2.print("gxoja");
   u8g2.setCursor(39, 29);
@@ -65,7 +102,7 @@ void draw_status(){
   u8g2.drawBox(4,34,joy,2);
   //Draw Numbers
   u8g2.setCursor(41, 20);
-  u8g2.print(age);
+  u8g2.print(height);
   u8g2.setCursor(65, 20);
   u8g2.print(weight);
   //Draw Hearts
@@ -127,9 +164,10 @@ void draw_help(){
   switch(mode){
     case 1:
     case 2:
+    case 3:
       u8g2.print(menu_names[selected]);
       break;
-    case 3:
+    case 4:
       u8g2.print(food_names[sub_selected]);
   }
   //write the name of selected option
