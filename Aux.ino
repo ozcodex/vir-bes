@@ -5,6 +5,13 @@ int delta(int number){
   return number;
 }
 
+//Turn a 255 integer in a range specific integer
+int conv255(int input, int maxim){
+  int out = (input*(maxim + 1))/255; // this should be kept as integer
+  if (out > maxim) out = maxim;
+  return out;
+}
+
 //Prepare the selected option to be rendered
 void build_selected(int pointer){
   //read sprite from PROGMEM

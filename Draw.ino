@@ -56,18 +56,18 @@ void draw_data(){
   u8g2.print("LEX ");
   u8g2.print("1e");
 
-  u8g2.setCursor(8, 22);
-  u8g2.print("evoluo");
-  u8g2.setCursor(46, 22);
-  u8g2.print("agxo");
+  u8g2.setCursor(7, 22);
+  u8g2.print("stadio");  //evoluo
+  u8g2.setCursor(43, 22);
+  u8g2.print("speco");
 
-  u8g2.drawRFrame(3,21,39,18,2);
-  u8g2.drawRFrame(44,21,23,18,2);
+  u8g2.drawRFrame(1,21,38,18,2);
+  u8g2.drawRFrame(41,21,28,18,2);
 
-  u8g2.setCursor(5, 29);
-  u8g2.print("maljuna");
+  u8g2.setCursor(4, 29);
+  u8g2.print("maljuna");   //ovo, bebo, infano, juna, matura, maljuna
   u8g2.setCursor(47, 30);
-  u8g2.print(age);
+  u8g2.print("D-A");
 
   memcpy_P(bits_buff, stats[1], 49); //0: male 1:female
   u8g2.drawXBM( 70, 14, 10, 10, bits_buff);
@@ -78,11 +78,12 @@ void draw_data(){
 
 //Status of virbes
 void draw_status(){
+  int bar_level;
   //Draw Text
   u8g2.setCursor(3, 11);
   u8g2.print("sata");
   u8g2.setCursor(39, 12);
-  u8g2.print("alta");
+  u8g2.print("agxo");
   u8g2.setCursor(63, 12);
   u8g2.print("peza");
   u8g2.setCursor(3, 25);
@@ -98,19 +99,21 @@ void draw_status(){
   u8g2.drawRFrame(37,13,23,16,3);
   u8g2.drawRFrame(61,13,23,16,3);
   //draw Bars
-  u8g2.drawBox(4,20,hungry,2);
-  u8g2.drawBox(4,34,joy,2);
+  bar_level = conv255(hungry,30);
+  u8g2.drawBox(4,20,bar_level,2);
+  bar_level = conv255(joy,30);
+  u8g2.drawBox(4,34,bar_level,2);
   //Draw Numbers
   u8g2.setCursor(41, 20);
-  u8g2.print(height);
+  u8g2.print(age);
   u8g2.setCursor(65, 20);
   u8g2.print(weight);
   //Draw Hearts
-  memcpy_P(bits_buff, hearts[delta(health)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6))], 49);
   u8g2.drawXBM( 60, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(health-2)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-2)], 49);
   u8g2.drawXBM( 68, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(health-4)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-4)], 49);
   u8g2.drawXBM( 76, 31, 7, 7, bits_buff);
 
 }

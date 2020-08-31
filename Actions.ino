@@ -56,20 +56,29 @@ void decrease_hungry(){
 }
 
 void increase_age(){
-  age++;
-  if (age > 999) age = 999;
+  if (age >= 255){
+    age = 255;
+  }else {
+    age++;
+  }
+  
 }
 
 void eat_food(int index){
-  hungry += index*2;
-  weight += index;
-  if (hungry > 30){
-    hungry = 30;
-    health--;
-    if (health < -1){
-      health = -1;
-    }
+  if(255 - index*20 < hungry){  //need to calculate better the values later
+    //prevent overflow
+    hungry = 255;
+    if (health > 0) health--;
+  }else{
+    hungry += index*10;
   }
+  if (255 - index*2 < weight){  // need to change this later
+    weight = 255;
+    if (health > 0) health--; //strange case, virbest should die
+  }else{
+    weight += index*2;
+  }
+
 }
 
 void change_settings(int index){

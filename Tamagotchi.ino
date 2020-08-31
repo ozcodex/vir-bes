@@ -64,12 +64,11 @@ int mode = 0;                     /* stage of game:
                                    */
 //Virbes data:
 //status variables
-int hungry = 15;   // max: 30
-int joy = 15;     // max: 30 
-int age = 0;     // max: 999
-int height = 85;  // max: 999
-int weight = 25;  // max: 999
-int health = 3;   // max: 6
+int hungry = 30;   // max: 255
+int joy = 128;     // max: 255 
+int age = 0;     // max: 255
+int weight = 25;  // max: 255
+int health = 128;   // max: 255
 
 void setup() {
   pinMode(BL_PIN, OUTPUT);
