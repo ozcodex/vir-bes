@@ -34,6 +34,7 @@ static const char menu_names[][10] = {
   };
 
 static const char food_names[][12] = {
+  "nuligi",
   "supo",
   "ananaso",
   "tasokuko",
@@ -45,7 +46,7 @@ static const char food_names[][12] = {
 const int menu_len = 13;          //lenght of menu array, important for loops
 unsigned long up_time = 0;        //time elapsed since turn-on
 bool time_flags [5];              //flags for time dependant actions
-unsigned char bits_buff[400];     //menu sprite buffer variable
+unsigned char bits_buff[100];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
 int animation_mark = 0; 
 int selected = 0;                 //current menu option selected
@@ -126,7 +127,7 @@ void loop() {
         select_menu_option();
         break;
       case 4:
-        eat_food(sub_selected);
+        if (sub_selected > 0) eat_food(sub_selected); //0 is the back action
         back_to_main();
         break;
       case 11:

@@ -12,6 +12,18 @@ int conv255(int input, int maxim){
   return out;
 }
 
+//Convert into roman
+void toRoman(int input, char* output){
+  char numerals[][6]={"I","II","III","IV","V","VI","VII","VIII","IX",
+                      "X","XI","XII","XIII","XIV","XV","XVI","XVII","XVIII"};
+  if (input >=1 && input <= 17){
+    sprintf(output, "%s", numerals[input-1]);
+  }else{
+    //Out of range
+    sprintf(output, "%d", input);
+  }
+}
+
 //Prepare the selected option to be rendered
 void build_selected(int pointer){
   //read sprite from PROGMEM
