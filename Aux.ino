@@ -35,11 +35,11 @@ void build_selected(int pointer){
 }
 
 //Define the offset to scroll menu
-int get_offset(int sel){
-  int max_items = 8;
-  int middle_item = 4;
+int get_offset(int sel,int list_len,int max_items){
+  //max items is the lenght of menu bar
+  int middle_item = max_items/2;
   int offset = 0;
-  int max_offset = menu_len - max_items;
+  int max_offset = list_len - max_items;
   if (sel > middle_item)
     offset += sel-middle_item;
   if (offset > max_offset )

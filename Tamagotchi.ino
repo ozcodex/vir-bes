@@ -44,6 +44,7 @@ static const char food_names[][12] = {
   
 //Global Variables
 const int menu_len = 13;          //lenght of menu array, important for loops
+const int food_len = 6;
 unsigned long up_time = 0;        //time elapsed since turn-on
 bool time_flags [5];              //flags for time dependant actions
 unsigned char bits_buff[100];     //menu sprite buffer variable
@@ -148,7 +149,7 @@ void loop() {
         selected = rotate_sel_R(menu_len - 1,selected);
         break;
       case 4:
-        sub_selected = rotate_sel_R(4,sub_selected);
+        sub_selected = rotate_sel_R(food_len - 1,sub_selected);
       break;
       case 11:
         sub_selected = rotate_sel_R(2,sub_selected);

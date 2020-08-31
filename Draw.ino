@@ -19,7 +19,7 @@ void draw_menu(int pointer){
   //load the inverted sprite of selected optioon
   build_selected(pointer);
   //define menu render offset (for scrolling)
-  int offset = get_offset(pointer);
+  int offset = get_offset(pointer,menu_len,8);
   //render menu options
   for(int i = offset;i<menu_len;i++){
     //load sprites from PROGMEM
@@ -123,18 +123,13 @@ void draw_status(){
 //Draw food options
 void draw_foods(int pointer){
   //draw foods
-  memcpy_P(bits_buff, foods[0], 100);
-  u8g2.drawXBM( 5, 21, 10, 10, bits_buff);
-  memcpy_P(bits_buff, foods[1], 100);
-  u8g2.drawXBM( 21, 21, 10, 10, bits_buff);
-  memcpy_P(bits_buff, foods[2], 100);
-  u8g2.drawXBM( 37, 21, 10, 10, bits_buff);
-  memcpy_P(bits_buff, foods[3], 100);
-  u8g2.drawXBM( 53, 21, 10, 10, bits_buff);
-  memcpy_P(bits_buff, foods[4], 100);
-  u8g2.drawXBM( 69, 21, 10, 10, bits_buff);
+  int offset = get_offset(pointer,food_len,5);
+  for (int i = offset;i < food_len;i++){
+    memcpy_P(bits_buff, foods[i], 100);
+    u8g2.drawXBM( 5+(i-offset)*16, 21, 10, 10, bits_buff);
+  }
   //draw rectangle arround selected option
-  u8g2.drawRFrame(3+16*pointer,19,14,14,2);
+  u8g2.drawRFrame(3+16*(pointer-offset),19,14,14,2);
 }
 
 //Options draw function
