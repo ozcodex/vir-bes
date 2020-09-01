@@ -33,23 +33,28 @@ static const char menu_names[][10] = {
   "agordo"
   };
 
-static const char food_names[][12] = {
+static const char food_names[][13] = {
   "nuligi",
   "supo",
   "ananaso",
+  "fromagxo",
   "tasokuko",
+  "tempomfritoj",
   "kokido",
+  "pico",
   "hamburgero"
   };
   
 //Global Variables
 const int menu_len = 13;          //lenght of menu array, important for loops
-const int food_len = 6;
+const int food_len = 9;
 unsigned long up_time = 0;        //time elapsed since turn-on
 bool time_flags [5];              //flags for time dependant actions
 unsigned char bits_buff[100];     //menu sprite buffer variable
 unsigned char selected_bits[100]; //temporal sprite of selected menu option
-int animation_mark = 0; 
+int animation_mark = 0;           //temp mark to know what sprite to draw
+int animation_loop = 0;           //number of times to repeat the animation before go back to standby
+int animation_offset = 0;         //the current animation
 int selected = 0;                 //current menu option selected
 int sub_selected = 0;             //for sub menus, the selected option
 bool pull_down[] = {false,false,false};
@@ -129,6 +134,7 @@ void loop() {
         break;
       case 4:
         if (sub_selected > 0) eat_food(sub_selected); //0 is the back action
+        change_animation(1);
         back_to_main();
         break;
       case 11:
@@ -182,6 +188,12 @@ void draw() {
   case 4:
     draw_menu(selected);
     draw_foods(sub_selected);
+    draw_help();
+    break;
+  case 5:
+    draw_menu(selected);
+    change_animation(2);
+    draw_virbes();
     draw_help();
     break;
   case 11:

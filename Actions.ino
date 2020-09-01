@@ -24,7 +24,7 @@ void time_actions(int time_unit){
    switch (time_unit){
     case 0: // each second
       decrease_hungry();
-      animation_mark = animation_mark == 0?1:0;
+      process_animation();
     break;
     case 1: // each 10 seconds
       increase_age();
@@ -38,6 +38,19 @@ void time_actions(int time_unit){
     case 5: // each 100000 sec. (27.7 hours)
     break;
   }
+}
+
+int process_animation(){
+  animation_mark = animation_mark == 0?1:0;
+  animation_loop--;
+  if (animation_loop < 0){
+    change_animation(0);  
+  }
+}
+
+void change_animation(int index){
+  animation_loop = 10*delta(index,1);
+  animation_offset = index;
 }
 
 void decrease_hungry(){

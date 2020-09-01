@@ -29,11 +29,11 @@ void draw_menu(int pointer){
   }
 }
 
-//character draw
+//virbes draw
 void draw_virbes(){
   int x_off= 0;
   int y_off= 0;
-  int off_set = animation_mark * 4;
+  int off_set = ((animation_offset*2)+animation_mark) * 4;
   //draw body
   memcpy_P(bits_buff, lex[0+off_set], 100);
   u8g2.drawXBM( 32+x_off, 17+y_off, 10, 10, bits_buff);
@@ -44,8 +44,8 @@ void draw_virbes(){
   memcpy_P(bits_buff, lex[3+off_set], 100);
   u8g2.drawXBM( 42+x_off, 27+y_off, 10, 10, bits_buff);
   //draw face
-  y_off += animation_mark;
-  memcpy_P(bits_buff, lex_face[0], 49);
+  off_set = (animation_offset*2)+animation_mark;
+  memcpy_P(bits_buff, lex_face[0+off_set], 49);
   u8g2.drawXBM( 38+x_off, 24+y_off, 7, 7, bits_buff);
 }
 
@@ -111,11 +111,11 @@ void draw_status(){
   u8g2.setCursor(65, 20);
   u8g2.print(weight);
   //Draw Hearts
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6))], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6),2)], 49);
   u8g2.drawXBM( 60, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-2)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-2,2)], 49);
   u8g2.drawXBM( 68, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-4)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-4,2)], 49);
   u8g2.drawXBM( 76, 31, 7, 7, bits_buff);
 
 }

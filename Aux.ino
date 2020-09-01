@@ -1,6 +1,6 @@
-//Fix the input between 0 and 2
-int delta(int number){
-  if (number > 2) number = 2;
+//Fix the input between 0 and the limit
+int delta(int number,int limit){
+  if (number > limit) number = limit;
   if (number < 0) number = 0;
   return number;
 }
