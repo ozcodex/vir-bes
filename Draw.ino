@@ -44,9 +44,11 @@ void draw_virbes(){
   memcpy_P(bits_buff, lex[3+off_set], 100);
   u8g2.drawXBM( 42+x_off, 27+y_off, 10, 10, bits_buff);
   //draw face
+  u8g2.setBitmapMode(1);
   off_set = (animation_offset*2)+animation_mark;
   memcpy_P(bits_buff, lex_face[0+off_set], 49);
   u8g2.drawXBM( 38+x_off, 24+y_off, 7, 7, bits_buff);
+  u8g2.setBitmapMode(0);
 }
 
 //data of virbes
