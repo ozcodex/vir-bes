@@ -84,6 +84,12 @@ void setup() {
   pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
   u8g2.setContrast(contrast);
+  //debug
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
+
 }
 
 void loop() {
