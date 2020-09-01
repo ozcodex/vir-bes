@@ -34,33 +34,29 @@ void draw_virbes(){
   const byte x= 42;
   const byte y= 17;
   //draw body
-  byte prev_offset = 0;
+  short prev_offset = 0;
   byte prev_lenght = 0;
-  byte prev_first_point_offset = 0;
+  short prev_first_point_offset = 0;
   byte pows[] = {16,8,4,2,1};
-  Serial.print("\nhere:\n");
-  for (byte j=0; j < 20; j++){
+  for (byte j=0; j < 18; j++){
     byte lenght = 0;
-    byte off_set = 0;
+    short off_set = 0;
     byte row = pgm_read_byte(&(lex[0][j]));
     //read first 5 bits
     for (byte i = 0; i < 5; i++){
       lenght += bitRead(row,7-i)*pows[i];
     }
-    off_set = (bitRead(row,2)?1:-1)*(2*bitRead(row,1)+bitRead(row,0)) + prev_offset;
-    Serial.print(lenght);
-    Serial.print(" ");
-    Serial.print(off_set);
-    Serial.print("\n");
+    off_set = (bitRead(row,2)?-1:1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
     byte num_pixels = abs(lenght - prev_lenght);
-    byte first_point_offset = int(lenght / 2)*(-1)+off_set;
-    byte x_offset = first_point_offset;
-    
+    if (num_pixels < 2) num_pixels = 2; //draw at least 2 pixels
+    short first_point_offset = -1*floor(lenght / 2)+off_set;
+ 
     for (byte i = 0; i < num_pixels; i++){
-      x_offset +=i;
-      if(first_point_offset > first_point_offset){
-        x_offset += prev_lenght;
-      }
+      short x_offset = first_point_offset +i;
+      if (i > 0 && x_offset >= prev_first_point_offset) x_offset += prev_lenght;
+      short correction = lenght - prev_lenght;
+      if (correction > 2) correction = 2;
+      x_offset += correction;
       u8g2.drawPixel(x+x_offset, y+j);
     }
     prev_offset = off_set;
@@ -71,7 +67,7 @@ void draw_virbes(){
   u8g2.setBitmapMode(1);
   byte off_set = (animation_offset*2)+animation_mark;
   memcpy_P(bits_buff, lex_face[0+off_set], 49);
-  u8g2.drawXBM( 38, 24, 7, 7, bits_buff);
+  //u8g2.drawXBM( 38, 24, 7, 7, bits_buff);
   u8g2.setBitmapMode(0);
 }
 
