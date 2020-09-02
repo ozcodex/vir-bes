@@ -5,6 +5,7 @@ import math
 def get_bit(x, n=5):
     return format(x, 'b').zfill(n)
 
+global data
 data = [
         { "length": 5, "offset": 0},
         { "length": 9, "offset": 0},
@@ -26,6 +27,7 @@ data = [
         { "length": 22, "offset": -1},
         ]
 
+global image
 image = []
 
 def bitstr2hex(bitstr):
@@ -43,6 +45,7 @@ def bitRead(string,pos):
 def drawPixel(x,y):
     x = x*4
     y = y*4
+    canvas.create_rectangle(x,y,x+3,y+3,fill="#000")
     Point(x, y).draw(win)
     Point(x+1, y).draw(win)
     Point(x, y+1).draw(win)
@@ -90,6 +93,7 @@ def draw_virbes():
     drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
 
 def load_data():
+    image = []
     for obj in data:
         bstr = get_bit(obj.get("length"))
         bstr += "1" if obj.get("offset") < 0 else "0"
@@ -97,6 +101,7 @@ def load_data():
         image.append(bstr)
 
 def redraw():
+    load_data()
     writeimg(image)
     draw_virbes()
 
@@ -105,8 +110,10 @@ def on_close():
     win.close()
     sys.exit()
 
-def update(value):
+def update():
     line = int(selector.get())
+    length = int(slicer.get())
+    data[line]["length"] = length
     redraw()
 
 def select(pos):
@@ -115,10 +122,19 @@ def select(pos):
     return
 
 def main():
-    load_data();
     #gui
     global master
     master = Tk()
+
+    global canvas
+    canvas = Canvas(
+            master,
+            bg='#78BE96',
+            height=192,
+            width=336)
+
+    canvas.pack()
+
     global selector
     selector = Scale(master, from_=0, to=len(image)-1,
             label="Line",
@@ -131,13 +147,13 @@ def main():
     slicer = Scale(master, from_=0, to=31,
             label="Length",
             orient=HORIZONTAL,
-            length=400,
-            command=update)
+            length=400)
     slicer.pack()
 
     select(0)
 
-    Button ( master, text="redraw", command=update )
+    butt = Button( master, text="redraw", command=update )
+    butt.pack()
     #graphics
     global win
     win = GraphWin("Sprite Visualizator", 336, 192)
