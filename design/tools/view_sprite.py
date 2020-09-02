@@ -36,7 +36,7 @@ in_put = [
         get_bin(18) +"000",
         get_bin(18) +"000",
         get_bin(18) +"000",
-        get_bin()+"000"
+        get_bin(19) +"000",
         get_bin(18) +"101",
         get_bin(20) +"101",
         get_bin(20) +"101",
