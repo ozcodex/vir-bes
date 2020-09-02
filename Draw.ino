@@ -43,7 +43,7 @@ void draw_virbes(){
   for (j=0; j < 18; j++){
     byte lenght = 0;
     short off_set = 0;
-    byte row = pgm_read_byte(&(lex[1][j]));
+    byte row = pgm_read_byte(&(lex[2][j]));
     //read first 5 bits
     for (byte i = 0; i < 5; i++){
       lenght += bitRead(row,7-i)*pows[i];
