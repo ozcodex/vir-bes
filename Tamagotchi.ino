@@ -3,14 +3,14 @@
 
 const uint8_t CLOCK_PIN = 13,
               DATA_PIN = 11,
-              CE_PIN = 10,
-              DC_PIN = 9,
+              DC_PIN = 10,
+              CE_PIN = 9,
               RESET_PIN = 8;
 
 const uint8_t BL_PIN = 4,
-              BTN_A_PIN = 5,
+              BTN_A_PIN = 7,
               BTN_B_PIN = 6,
-              BTN_C_PIN = 7;
+              BTN_C_PIN = 5;
 
 //Definition of display to use, here is Nokia 5110 84x48
 U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
@@ -84,12 +84,7 @@ void setup() {
   pinMode(BTN_C_PIN, INPUT_PULLUP);  
   u8g2.begin();
   u8g2.setContrast(contrast);
-  //debug
-  Serial.begin(9600);
-  while (!Serial) {
-    ; // wait for serial port to connect. Needed for native USB port only
-  }
-
+  u8g2.setDisplayRotation(U8G2_R2);
 }
 
 void loop() {

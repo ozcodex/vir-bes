@@ -5,7 +5,7 @@ of the offset and the displacement respect to the previous offset.
 The first number use the 5 MSB of the byte, the other 3 represents the offset.
 The max limit for the distance is 31 pixels, an for the offset is 3.
 
-04 1 1 = 00100 1 01 = 0010 0101 = 25
+04 1 1 = 00100 0 00 = 0010 0000 = 20
 08 0 0 = 01000 0 00 = 0100 0000 = 40
 10 0 0 = 01010 0 00 = 0101 0000 = 50
 12 0 0 = 01100 0 00 = 0110 0000 = 60
@@ -24,32 +24,23 @@ The max limit for the distance is 31 pixels, an for the offset is 3.
 17 1 1 = 10001 1 01 = 1000 1101 = 8D
 17 1 1 = 10001 1 01 = 1000 1101 = 8D
 
-Drawing:
 
-having the draw coordinates (center-top) x.y
-having the previous lenght and the previous offset.
-do:
-define a short variable and asiign 0 to it, to track the lenght.
-define another short variable, this will be de offset, starts on 0.
-define previous pixel as 0;
-take the MSB and multiply times 16 (2 pow 4) and add it to variable, then 
-take the MSB and multiply times 8 (2 pow 3) and add it to variable, then 
-take the MSB and multiply times 4 (2 pow 2) and add it to variable, then
-take the MSB and multiply times 2 (2 pow 1) and add it to variable, then
-take the MSB and add it to variable. this is the lenght
-take the MSB and multiply times -1, store it as the sign, then
-take the MSB and multiply times 2, add it to offset variable, then
-take the MSB and add it to offset variable, then multiply the sign, 
-store the resutl in the offset, add to it the previous offset.
+01 0 0 = 0000 1000 = 08
+04 0 0 = 0010 0000 = 20
+08 0 0 = 0100 0000 = 40
+08 0 0 = 0100 0000 = 40
+09 0 0 = 0100 1000 = 48
+08 0 0 = 0100 0000 = 40
+10 0 0 = 0101 0000 = 50
+08 0 0 = 0100 0000 = 40
+12 0 0 = 0110 0000 = 60
+10 0 0 = 0101 0000 = 50
+08 0 0 = 0100 0000 = 40
+06 0 0 = 0011 0000 = 30
+06 0 0 = 0011 0000 = 30
+04 0 0 = 0010 0000 = 20
+04 0 0 = 0010 0000 = 20
+02 0 0 = 0001 0000 = 10
+01 0 0 = 0000 1000 = 08
+00 0 0 = 0000 0000 = 00
 
-substract the lenght to the previous one. this is the amount of pixels to draw.
-half the lenght, times -1, add the offset. this is how much to the left move.
-substract it to the x coordenate, and this is the first point, draw pixel.
-
-add 1 to pervious number (x_offset), 
-if x_ offset > previous pixel, add to x_offset previous lenght.
-sraw a pixel.
-repeat.
-calculate again fist pixel and store as previous pixel.
-
-for last row, draw a line, not points
