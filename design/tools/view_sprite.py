@@ -1,29 +1,11 @@
 from graphics import *
+from tkinter import *
 import math
 
 def get_bin(x, n=5):
     return format(x, 'b').zfill(n)
 
-in_put = [
-	'00101 000',
-	'01001 000',
-	'01011 000',
-	'01101 000',
-	'01111 000',
-	'10000 001',
-	'10001 000',
-	'10010 000',
-	'10010 000',
-	'10010 000',
-	'10010 000',
-	'10010 000',
-	'10010 101',
-	'10100 101',
-	'10100 010',
-	'10101 101',
-	'10101 101',
-        ]
-in_put = [
+image = [
         get_bin(5) +"000", 
         get_bin(9) +"000",
         get_bin(11) +"000",
@@ -43,11 +25,6 @@ in_put = [
         get_bin(21) +"101",
         get_bin(22) +"101",
         ]
-
-image = []
-
-for st in in_put:
-    image.append(st.replace(' ',''))
 
 def bitstr2hex(bitstr):
     bitstr = bitstr
@@ -110,13 +87,32 @@ def draw_virbes():
         prev_lpo = last_point_offset;
     drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
 
-def main():
+def redraw():
     writeimg(image)
+    draw_virbes()
+
+def on_close():
+    master.destroy()
+    win.close()
+    sys.exit()
+
+def main():
+    #gui
+    global master
+    master = Tk()
+    slicer = Scale(master, from_=0, to=31,
+            label="Lenght",
+            orient=HORIZONTAL)
+    slicer.set(23)
+    slicer.pack()
+    #graphics
     global win
     win = GraphWin("Sprite Visualizator", 336, 192)
     win.setBackground(color_rgb(150, 190, 120))
-    draw_virbes()
-    win.getMouse()
-    win.close()
+
+    redraw();
+
+    master.protocol("WM_DELETE_WINDOW", on_close)
+    master.mainloop()
 
 main()
