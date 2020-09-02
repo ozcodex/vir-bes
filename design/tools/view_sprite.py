@@ -2,29 +2,31 @@ from graphics import *
 from tkinter import *
 import math
 
-def get_bin(x, n=5):
+def get_bit(x, n=5):
     return format(x, 'b').zfill(n)
 
-image = [
-        get_bin(5) +"000", 
-        get_bin(9) +"000",
-        get_bin(11) +"000",
-        get_bin(13) +"000",
-        get_bin(15) +"000",
-        get_bin(16) +"001",
-        get_bin(17) +"000",
-        get_bin(18) +"000",
-        get_bin(18) +"000",
-        get_bin(18) +"000",
-        get_bin(18) +"000",
-        get_bin(18) +"000",
-        get_bin(19) +"000",
-        get_bin(18) +"101",
-        get_bin(20) +"101",
-        get_bin(20) +"101",
-        get_bin(21) +"101",
-        get_bin(22) +"101",
+data = [
+        { "length": 5, "offset": 0},
+        { "length": 9, "offset": 0},
+        { "length": 11, "offset": 0},
+        { "length": 13, "offset": 0},
+        { "length": 15, "offset": 0},
+        { "length": 16, "offset": 1},
+        { "length": 17, "offset": 0},
+        { "length": 18, "offset": 0},
+        { "length": 18, "offset": 0},
+        { "length": 18, "offset": 0},
+        { "length": 18, "offset": 0},
+        { "length": 18, "offset": 0},
+        { "length": 19, "offset": 0},
+        { "length": 18, "offset": -1},
+        { "length": 20, "offset": -1},
+        { "length": 20, "offset": -1},
+        { "length": 21, "offset": -1},
+        { "length": 22, "offset": -1},
         ]
+
+image = []
 
 def bitstr2hex(bitstr):
     bitstr = bitstr
@@ -61,31 +63,38 @@ def draw_virbes():
     x= 42;
     y= 17;
     prev_offset = 0;
-    prev_lenght = 0;
+    prev_length = 0;
     prev_fpo = 0;
     prev_lpo = 0;
     pows= [16,8,4,2,1];
     j = 0
     for j in range(17):
-        lenght = 0;
+        length = 0;
         off_set = 0;
         row = image[j];
         for i in range(4):
-            lenght += bitRead(row,7-i)*pows[i];
+            length += bitRead(row,7-i)*pows[i];
         off_set = (-1 if bitRead(row,2) else 1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
-        first_point_offset = -1*math.floor(lenght / 2)+off_set;
+        first_point_offset = -1*math.floor(length / 2)+off_set;
         drawPixel(x+first_point_offset, y+j);
-        last_point_offset = first_point_offset + lenght;
+        last_point_offset = first_point_offset + length;
         drawPixel(x+last_point_offset, y+j);
         if (abs(first_point_offset - prev_fpo) >= 2):
             drawLine(x+min(first_point_offset,prev_fpo), y+j, x+max(first_point_offset,prev_fpo), y+j);
         if (abs(last_point_offset - prev_lpo) >= 2):
             drawLine(x+min(last_point_offset,prev_lpo), y+j, x+max(last_point_offset,prev_lpo), y+j);
         prev_offset = off_set;
-        prev_lenght = lenght;
+        prev_length = length;
         prev_fpo = first_point_offset;
         prev_lpo = last_point_offset;
     drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
+
+def load_data():
+    for obj in data:
+        bstr = get_bit(obj.get("length"))
+        bstr += "1" if obj.get("offset") < 0 else "0"
+        bstr += get_bit(abs(obj.get("offset")),2)
+        image.append(bstr)
 
 def redraw():
     writeimg(image)
@@ -96,15 +105,39 @@ def on_close():
     win.close()
     sys.exit()
 
+def update(value):
+    line = int(selector.get())
+    redraw()
+
+def select(pos):
+    length = data[int(pos)].get("length")
+    slicer.set(length)
+    return
+
 def main():
+    load_data();
     #gui
     global master
     master = Tk()
+    global selector
+    selector = Scale(master, from_=0, to=len(image)-1,
+            label="Line",
+            orient=VERTICAL,
+            command=select,
+            length=300)
+    selector.pack()
+
+    global slicer
     slicer = Scale(master, from_=0, to=31,
-            label="Lenght",
-            orient=HORIZONTAL)
-    slicer.set(23)
+            label="Length",
+            orient=HORIZONTAL,
+            length=400,
+            command=update)
     slicer.pack()
+
+    select(0)
+
+    Button ( master, text="redraw", command=update )
     #graphics
     global win
     win = GraphWin("Sprite Visualizator", 336, 192)
