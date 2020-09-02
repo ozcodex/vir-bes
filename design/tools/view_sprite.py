@@ -93,12 +93,13 @@ def draw_virbes():
     drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
 
 def load_data():
-    image = []
+    i=0;
     for obj in data:
         bstr = get_bit(obj.get("length"))
         bstr += "1" if obj.get("offset") < 0 else "0"
         bstr += get_bit(abs(obj.get("offset")),2)
-        image.append(bstr)
+        image[i] = bstr
+        i += 1
 
 def redraw():
     load_data()
