@@ -50,12 +50,20 @@ void draw_virbes(){
     }
     off_set = (bitRead(row,2)?-1:1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
     short first_point_offset = -1*floor(lenght / 2)+off_set;
+    Serial.print("l: ");
+    Serial.print(lenght);
+    Serial.print(" o: ");
+    Serial.print(off_set);
+    Serial.print(" ----> ");
     u8g2.drawPixel(x+first_point_offset, y+j);
+    Serial.print(first_point_offset);
+    Serial.print(':');
     short last_point_offset = first_point_offset + lenght;
     u8g2.drawPixel(x+last_point_offset, y+j);
+    Serial.println(last_point_offset);
     //fill spaces
-    if (abs(first_point_offset - prev_fpo) >= 2) u8g2.drawLine(x+min(first_point_offset,prev_fpo), y+j, x+max(first_point_offset,prev_fpo), y+j);
-    if (abs(last_point_offset - prev_lpo) >= 2) u8g2.drawLine(x+min(last_point_offset,prev_lpo), y+j, x+max(last_point_offset,prev_lpo), y+j);
+    //if (abs(first_point_offset - prev_fpo) >= 2) u8g2.drawLine(x+min(first_point_offset,prev_fpo), y+j, x+max(first_point_offset,prev_fpo), y+j);
+    //if (abs(last_point_offset - prev_lpo) >= 2) u8g2.drawLine(x+min(last_point_offset,prev_lpo), y+j, x+max(last_point_offset,prev_lpo), y+j);
     
     //save previous values
     prev_offset = off_set;

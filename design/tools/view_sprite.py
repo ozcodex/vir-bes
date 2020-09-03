@@ -2,7 +2,7 @@ from graphics import *
 from tkinter import *
 import math
 
-factor = 1;
+factor = 5;
 h = 48;
 w = 84
 
@@ -47,10 +47,18 @@ def bitRead(string,pos):
     return int(string[last - pos])
 
 def drawPixel(x,y):
-    canvas.create_line(x, y, x+1, y, width = 0,fill="#000")
+    x = x*factor
+    y = y*factor
+    canvas.create_rectangle(x,y,x+factor,y+factor,fill="#000")
 
 def drawLine(x1,y1,x2,y2):
-    line = canvas.create_line(x1, y1, x2, y2);
+    x1 = x1*factor
+    x2 = x2*factor
+    y1 = y1*factor
+    y2 = y2*factor
+    mod = int(factor/2)
+    line = canvas.create_line(x1+mod, y1+mod, x2+mod, y2+mod,width=factor);
+    #line = canvas.create_line(x1, y1, x2, y2);
     return
 
 def draw_virbes():
@@ -62,17 +70,18 @@ def draw_virbes():
     prev_lpo = 0;
     pows= [16,8,4,2,1];
     j = 0
-    for j in range(17):
+    for j in range(18):
         length = 0;
         off_set = 0;
         row = image[j];
-        for i in range(4):
+        for i in range(5):
             length += bitRead(row,7-i)*pows[i];
         off_set = (-1 if bitRead(row,2) else 1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
         first_point_offset = -1*math.floor(length / 2)+off_set;
         drawPixel(x+first_point_offset, y+j);
         last_point_offset = first_point_offset + length;
         drawPixel(x+last_point_offset, y+j);
+        print("l:",length,"o:",off_set,"---->",first_point_offset,":",last_point_offset )
         if (abs(first_point_offset - prev_fpo) >= 2):
             drawLine(x+min(first_point_offset,prev_fpo), y+j, x+max(first_point_offset,prev_fpo), y+j);
         if (abs(last_point_offset - prev_lpo) >= 2):
@@ -92,7 +101,7 @@ def load_data():
         image.append(bstr)
 
 def redraw():
-    canvas.create_rectangle(0,0,w,h,fill='#78BE96')
+    canvas.create_rectangle(0,0,w*factor,h*factor,fill='#78BE96')
     load_data()
     writeimg(image)
     draw_virbes()
@@ -124,8 +133,8 @@ def main():
     global canvas
     canvas = Canvas(
             master,
-            height=h,
-            width=w)
+            height=h*factor,
+            width=w*factor)
 
     canvas.pack()
 

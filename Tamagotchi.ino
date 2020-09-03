@@ -85,6 +85,10 @@ void setup() {
   u8g2.begin();
   u8g2.setContrast(contrast);
   u8g2.setDisplayRotation(U8G2_R2);
+  Serial.begin(9600);
+  while (!Serial) {
+    ; // wait for serial port to connect. Needed for native USB port only
+  }
 }
 
 void loop() {
