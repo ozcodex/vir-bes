@@ -2,6 +2,10 @@ from graphics import *
 from tkinter import *
 import math
 
+factor = 4;
+h = 48;
+w = 84
+
 def get_bit(x, n=5):
     return format(x, 'b').zfill(n)
 
@@ -43,23 +47,16 @@ def bitRead(string,pos):
     return int(string[last - pos])
 
 def drawPixel(x,y):
-    x = x*4
-    y = y*4
-    canvas.create_rectangle(x,y,x+3,y+3,fill="#000")
-    Point(x, y).draw(win)
-    Point(x+1, y).draw(win)
-    Point(x, y+1).draw(win)
-    Point(x+1, y+1).draw(win)
+    x = x*factor
+    y = y*factor
+    canvas.create_rectangle(x,y,x+factor,y+factor,fill="#000")
 
 def drawLine(x1,y1,x2,y2):
-    x1 = x1*4
-    x2 = x2*4
-    y1 = y1*4
-    y2 = y2*4
-    Line(Point(x1,y1), Point(x2,y2)).draw(win)
-    Line(Point(x1+1,y1), Point(x2+1,y2)).draw(win)
-    Line(Point(x1,y1+1), Point(x2,y2+1)).draw(win)
-    Line(Point(x1+1,y1+1), Point(x2+1,y2+1)).draw(win)
+    x1 = x1*factor
+    x2 = x2*factor
+    y1 = y1*factor
+    y2 = y2*factor
+    line = canvas.create_line(x1, y1, x2, y2,width=2);
     return
 
 def draw_virbes():
@@ -93,15 +90,15 @@ def draw_virbes():
     drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
 
 def load_data():
-    i=0;
+    image.clear()
     for obj in data:
         bstr = get_bit(obj.get("length"))
         bstr += "1" if obj.get("offset") < 0 else "0"
         bstr += get_bit(abs(obj.get("offset")),2)
-        image[i] = bstr
-        i += 1
+        image.append(bstr)
 
 def redraw():
+    canvas.create_rectangle(0,0,w*factor,h*factor,fill='#78BE96')
     load_data()
     writeimg(image)
     draw_virbes()
@@ -137,7 +134,7 @@ def main():
     canvas.pack()
 
     global selector
-    selector = Scale(master, from_=0, to=len(image)-1,
+    selector = Scale(master, from_=0, to=len(data)-1,
             label="Line",
             orient=VERTICAL,
             command=select,
@@ -157,7 +154,7 @@ def main():
     butt.pack()
     #graphics
     global win
-    win = GraphWin("Sprite Visualizator", 336, 192)
+    win = GraphWin("Sprite Visualizator", w*factor, h*factor)
     win.setBackground(color_rgb(150, 190, 120))
 
     redraw();
