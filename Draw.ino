@@ -31,21 +31,21 @@ void draw_menu(int pointer){
 
 //virbes draw
 void draw_virbes(){
-  const byte x= 42;
-  const byte y= 17;
+  const short x= 42;
+  const short y= 17;
   //draw body
   short prev_offset = 0;
   short prev_lenght = 0;
   short prev_fpo = 0;
   short prev_lpo = 0;
-  byte pows[] = {16,8,4,2,1};
-  byte j;
+  short pows[] = {16,8,4,2,1};
+  short j;
   for (j=0; j < 18; j++){
-    byte lenght = 0;
+    short lenght = 0;
     short off_set = 0;
-    byte row = pgm_read_byte(&(lex[2][j]));
+    byte row = pgm_read_byte(&(lex[0][j]));
     //read first 5 bits
-    for (byte i = 0; i < 5; i++){
+    for (short i = 0; i < 5; i++){
       lenght += bitRead(row,7-i)*pows[i];
     }
     off_set = (bitRead(row,2)?-1:1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
@@ -67,7 +67,7 @@ void draw_virbes(){
   u8g2.drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
   //draw face
   u8g2.setBitmapMode(1);
-  byte off_set = (animation_offset*2)+animation_mark;
+  short off_set = (animation_offset*2)+animation_mark;
   memcpy_P(bits_buff, lex_face[0+off_set], 49);
   u8g2.drawXBM( 40, 23, 7, 7, bits_buff);
   u8g2.setBitmapMode(0);

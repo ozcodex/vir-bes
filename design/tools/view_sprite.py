@@ -2,7 +2,7 @@ from graphics import *
 from tkinter import *
 import math
 
-factor = 4;
+factor = 1;
 h = 48;
 w = 84
 
@@ -47,17 +47,10 @@ def bitRead(string,pos):
     return int(string[last - pos])
 
 def drawPixel(x,y):
-    x = x*factor
-    y = y*factor
-    canvas.create_rectangle(x,y,x+factor,y+factor,fill="#000")
+    canvas.create_line(x, y, x+1, y, width = 0,fill="#000")
 
 def drawLine(x1,y1,x2,y2):
-    x1 = x1*factor
-    x2 = x2*factor
-    y1 = y1*factor
-    y2 = y2*factor
-    mod = int(factor/2)+1
-    line = canvas.create_line(x1+mod, y1+mod, x2+mod, y2+mod,width=factor);
+    line = canvas.create_line(x1, y1, x2, y2);
     return
 
 def draw_virbes():
@@ -99,7 +92,7 @@ def load_data():
         image.append(bstr)
 
 def redraw():
-    canvas.create_rectangle(0,0,w*factor,h*factor,fill='#78BE96')
+    canvas.create_rectangle(0,0,w,h,fill='#78BE96')
     load_data()
     writeimg(image)
     draw_virbes()
@@ -111,12 +104,16 @@ def on_close():
 def update():
     line = int(selector.get())
     length = int(slicer.get())
+    offset = int(slider.get())
     data[line]["length"] = length
+    data[line]["offset"] = offset
     redraw()
 
 def select(pos):
     length = data[int(pos)].get("length")
+    offset = data[int(pos)].get("offset")
     slicer.set(length)
+    slider.set(offset)
     return
 
 def main():
@@ -127,9 +124,8 @@ def main():
     global canvas
     canvas = Canvas(
             master,
-            bg='#78BE96',
-            height=192,
-            width=336)
+            height=h,
+            width=w)
 
     canvas.pack()
 
@@ -147,6 +143,13 @@ def main():
             orient=HORIZONTAL,
             length=400)
     slicer.pack()
+    
+    global slider
+    slider = Scale(master, from_=-3, to=3,
+            label="Offset",
+            orient=HORIZONTAL,
+            length=100)
+    slider.pack()
 
     select(0)
 
