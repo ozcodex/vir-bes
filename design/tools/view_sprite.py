@@ -81,7 +81,6 @@ def draw_virbes():
         drawPixel(x+first_point_offset, y+j);
         last_point_offset = first_point_offset + length;
         drawPixel(x+last_point_offset, y+j);
-        print("l:",length,"o:",off_set,"---->",first_point_offset,":",last_point_offset )
         if (abs(first_point_offset - prev_fpo) >= 2):
             drawLine(x+min(first_point_offset,prev_fpo), y+j, x+max(first_point_offset,prev_fpo), y+j);
         if (abs(last_point_offset - prev_lpo) >= 2):
