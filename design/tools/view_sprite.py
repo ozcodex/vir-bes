@@ -56,7 +56,7 @@ def drawLine(x1,y1,x2,y2):
     x2 = x2*factor
     y1 = y1*factor
     y2 = y2*factor
-    mod = int(factor/2)
+    mod = int(factor/2)+1
     line = canvas.create_line(x1+mod, y1+mod, x2+mod, y2+mod,width=factor);
     return
 
@@ -106,7 +106,6 @@ def redraw():
 
 def on_close():
     master.destroy()
-    win.close()
     sys.exit()
 
 def update():
@@ -153,10 +152,6 @@ def main():
 
     butt = Button( master, text="redraw", command=update )
     butt.pack()
-    #graphics
-    global win
-    win = GraphWin("Sprite Visualizator", w*factor, h*factor)
-    win.setBackground(color_rgb(150, 190, 120))
 
     redraw();
 
