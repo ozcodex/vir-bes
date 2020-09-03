@@ -56,7 +56,8 @@ def drawLine(x1,y1,x2,y2):
     x2 = x2*factor
     y1 = y1*factor
     y2 = y2*factor
-    line = canvas.create_line(x1, y1, x2, y2,width=2);
+    mod = int(factor/2)
+    line = canvas.create_line(x1+mod, y1+mod, x2+mod, y2+mod,width=factor);
     return
 
 def draw_virbes():
