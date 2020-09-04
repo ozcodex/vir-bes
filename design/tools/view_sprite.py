@@ -2,7 +2,7 @@ from graphics import *
 from tkinter import *
 import math
 
-factor = 5;
+factor = 6; #more than 2
 h = 48;
 w = 84
 
@@ -48,17 +48,16 @@ def bitRead(string,pos):
 
 def drawPixel(x,y):
     x = x*factor
-    y = y*factor
-    canvas.create_rectangle(x,y,x+factor,y+factor,fill="#000")
+    y = y*(factor+1)
+    canvas.create_rectangle(x,y,x+factor-2,y+factor,fill="#000")
 
 def drawLine(x1,y1,x2,y2):
     x1 = x1*factor
     x2 = x2*factor
-    y1 = y1*factor
-    y2 = y2*factor
-    mod = int(factor/2)
-    line = canvas.create_line(x1+mod, y1+mod, x2+mod, y2+mod,width=factor);
-    #line = canvas.create_line(x1, y1, x2, y2);
+    y1 = y1*(factor+1)
+    y2 = y2*(factor+1)
+    mod = math.ceil(factor/2)
+    line = canvas.create_line(x1, y1+mod, x2+factor-1, y2+mod,width=factor+1);
     return
 
 def draw_virbes():
@@ -89,7 +88,7 @@ def draw_virbes():
         prev_length = length;
         prev_fpo = first_point_offset;
         prev_lpo = last_point_offset;
-    drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
+    drawLine(x+prev_fpo, y+j+1, x+prev_lpo, y+j+1);
 
 def load_data():
     image.clear()
