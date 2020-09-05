@@ -37,11 +37,11 @@ image = []
 
 def load_sdata():
     global data
-    with open('data.json', 'r') as f:
+    with open(filename.get(), 'r') as f:
         data = json.loads(f.read())
         print(data) 
 def save_sdata():
-    with open('data.json', 'w') as f:
+    with open(filename.get(), 'w') as f:
         f.write(json.dumps(data))
         print(data) 
 
@@ -103,14 +103,32 @@ def draw_virbes():
 
 def load_data():
     image.clear()
+    select(selector.get())
     for obj in data:
         bstr = get_bit(obj.get("length"))
         bstr += "1" if obj.get("offset") < 0 else "0"
         bstr += get_bit(abs(obj.get("offset")),2)
         image.append(bstr)
 
+def draw_grid():
+    for i in range(w):
+        canvas.create_line(i*factor-1,0,i*factor-1,h*factor,fill="#556B2F")
+    for j in range(h):
+        canvas.create_line(0,j*(factor+1),w*factor,j*(factor+1),fill="#556B2F")
+
+def draw_guide():
+    x= 60
+    y = 17+int(selector.get())
+    canvas.create_rectangle(x*factor-1,0,84*factor,48*factor,outline="#78BE96",fill='#78BE96')
+    draw_grid()
+    drawLine(x,y,84,y)
+    arrow_len = 2
+    drawLine(x,y,x+arrow_len,y-arrow_len)
+    drawLine(x,y,x+arrow_len,y+arrow_len)
+
 def redraw():
-    canvas.create_rectangle(0,0,w*factor,h*factor,fill='#78BE96')
+    canvas.create_rectangle(0,0,w*factor,h*factor,outline="#78BE96",fill='#78BE96')
+    draw_guide()
     load_data()
     writeimg(image)
     draw_virbes()
@@ -128,6 +146,7 @@ def update():
     redraw()
 
 def select(pos):
+    draw_guide()
     length = data[int(pos)].get("length")
     offset = data[int(pos)].get("offset")
     slicer.set(length)
@@ -144,52 +163,57 @@ def action_save():
 
 def main():
     #gui
-    global master
-    master = Tk()
 
+    global master
     global canvas
+    global selector
+    global slicer
+    global slider
+    global filename
+
+    master = Tk()
     canvas = Canvas(
             master,
             height=h*factor,
             width=w*factor)
 
-    canvas.pack()
-
-    global selector
     selector = Scale(master, from_=0, to=len(data)-1,
-            label="Line",
             orient=VERTICAL,
             command=select,
             length=300)
-    selector.pack()
 
-    global slicer
     slicer = Scale(master, from_=0, to=31,
             label="Length",
             orient=HORIZONTAL,
             length=400)
-    slicer.pack()
     
-    global slider
     slider = Scale(master, from_=-3, to=3,
             label="Offset",
             orient=HORIZONTAL,
             length=100)
-    slider.pack()
+
+    separ1 = Label(master)
+    butt1 = Button( master, text="redraw", command=update )
+    etiq1 = Label( master, text="File name:")
+    filename = Entry( master)
+    butt2 = Button( master, text="load", command=action_load )
+    butt3 = Button( master, text="save", command=action_save )
+
+    canvas.grid(column=0, row=0, columnspan=3)
+    selector.grid(column=3, row=0) #row
+    slicer.grid(column=0, row=1, columnspan=2) #lenght
+    slider.grid(column=2, row=1) #offset
+    butt1.grid(column=3, row=1)
+    separ1.grid(column=0, row=2)
+    etiq1.grid(column=0, row=5)
+    filename.grid(column=1, row=5)
+    butt2.grid(column=2, row=5)
+    butt3.grid(column=3, row=5)
+
+    filename.insert(0,"data.json")
+    filename.focus_set()
 
     select(0)
-
-    butt = Button( master, text="redraw", command=update )
-    butt.pack()
-
-    butt = Button( master, text="load", command=action_load )
-    butt.pack()
-
-    butt = Button( master, text="save", command=action_save )
-    butt.pack()
-
-
-
     redraw();
 
     master.protocol("WM_DELETE_WINDOW", on_close)
