@@ -1,5 +1,6 @@
 from graphics import *
 from tkinter import *
+import json
 import math
 
 factor = 6; #more than 2
@@ -33,6 +34,16 @@ data = [
 
 global image
 image = []
+
+def load_sdata():
+    global data
+    with open('data.json', 'r') as f:
+        data = json.loads(f.read())
+        print(data) 
+def save_sdata():
+    with open('data.json', 'w') as f:
+        f.write(json.dumps(data))
+        print(data) 
 
 def bitstr2hex(bitstr):
     bitstr = bitstr
@@ -123,6 +134,14 @@ def select(pos):
     slider.set(offset)
     return
 
+def action_load():
+    load_sdata()
+    redraw()
+
+def action_save():
+    save_sdata()
+    redraw()
+
 def main():
     #gui
     global master
@@ -162,6 +181,14 @@ def main():
 
     butt = Button( master, text="redraw", command=update )
     butt.pack()
+
+    butt = Button( master, text="load", command=action_load )
+    butt.pack()
+
+    butt = Button( master, text="save", command=action_save )
+    butt.pack()
+
+
 
     redraw();
 
