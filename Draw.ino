@@ -34,6 +34,7 @@ void draw_virbes(){
   const short x= 42;
   const short y= 17;
   //draw body
+  short anim_off_set = animation_mark;
   short prev_offset = 0;
   short prev_lenght = 0;
   short prev_fpo = 0;
@@ -43,11 +44,12 @@ void draw_virbes(){
   for (j=0; j < 18; j++){
     short lenght = 0;
     short off_set = 0;
-    byte row = pgm_read_byte(&(lex[0][j]));
+    byte row = pgm_read_byte(&(lex[anim_off_set][j]));
     //read first 5 bits
     for (short i = 0; i < 5; i++){
       lenght += bitRead(row,7-i)*pows[i];
     }
+    if (lenght == 0) continue; //skip round
     off_set = (bitRead(row,2)?-1:1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
     short first_point_offset = -1*floor(lenght / 2)+off_set;
     u8g2.drawPixel(x+first_point_offset, y+j);
@@ -67,8 +69,8 @@ void draw_virbes(){
   u8g2.drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
   //draw face
   u8g2.setBitmapMode(1);
-  short off_set = (animation_offset*2)+animation_mark;
-  memcpy_P(bits_buff, lex_face[0+off_set], 49);
+  anim_off_set = (animation_offset*2)+animation_mark;
+  memcpy_P(bits_buff, lex_face[anim_off_set], 49);
   u8g2.drawXBM( 40, 23, 7, 7, bits_buff);
   u8g2.setBitmapMode(0);
 }

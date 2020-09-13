@@ -49,7 +49,7 @@ int process_animation(){
 }
 
 void change_animation(int index){
-  animation_loop = 5*delta(index,1);
+  animation_loop = 5*delta(index,1); //repeat the animation 5 loops
   animation_offset = index;
 }
 

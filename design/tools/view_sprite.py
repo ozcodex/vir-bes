@@ -86,6 +86,8 @@ def draw_virbes():
         row = image[j];
         for i in range(5):
             length += bitRead(row,7-i)*pows[i];
+        if length == 0:
+            continue
         off_set = (-1 if bitRead(row,2) else 1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
         first_point_offset = -1*math.floor(length / 2)+off_set;
         drawPixel(x+first_point_offset, y+j);
