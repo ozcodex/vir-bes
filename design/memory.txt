@@ -1,0 +1,9 @@
+the eeprom device used is 24lc16b, this have 8 blocks of 256 bytes each
+
+the sprites of size 7x7 use 7 bytes (56 bits)
+the sprites of size 10x10 use 20 bytes (16 bits)
+the body description use 1 byte per line, for 18 bytes (144 bits)
+
+a block can store 36 sprites of 7 bytes, with 4 bytes free,
+or 12 sprites of 20 bytes, whit 16 bytes free,
+or 14 body descriptors (18 bytes) with 4 bytes free,

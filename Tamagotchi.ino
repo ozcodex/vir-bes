@@ -1,16 +1,20 @@
 #include <U8g2lib.h>
 #include "sprites.h"
 
+
 const uint8_t CLOCK_PIN = 13,
               DATA_PIN = 11,
               DC_PIN = 10,
               CE_PIN = 9,
               RESET_PIN = 8;
 
-const uint8_t BL_PIN = 4,
-              BTN_A_PIN = 7,
-              BTN_B_PIN = 6,
-              BTN_C_PIN = 5;
+const uint8_t BL_PIN = 3,
+              BTN_A_PIN = 6,
+              BTN_B_PIN = 5,
+              BTN_C_PIN = 4;
+
+const uint8_t SCL_PIN = A5,
+              SDA_PIN = A4;
 
 //Definition of display to use, here is Nokia 5110 84x48
 U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
@@ -81,7 +85,8 @@ void setup() {
   pinMode(BL_PIN, OUTPUT);
   pinMode(BTN_A_PIN, INPUT_PULLUP);
   pinMode(BTN_B_PIN, INPUT_PULLUP);
-  pinMode(BTN_C_PIN, INPUT_PULLUP);  
+  pinMode(BTN_C_PIN, INPUT_PULLUP); 
+  setupEEPROM(); 
   u8g2.begin();
   u8g2.setContrast(contrast);
   u8g2.setDisplayRotation(U8G2_R2);
