@@ -167,9 +167,11 @@ void draw_status(){
 //Draw food options
 void draw_foods(int pointer){
   //draw foods
-  int offset = get_offset(pointer,food_len,5);
-  for (int i = offset;i < food_len;i++){
-    memcpy_P(bits_buff, foods[i], BIG_SPRITE_BYTES);
+  int offset = get_offset(pointer,FOOD_MENU_LENGTH,5);
+  for (int i = offset;i < FOOD_MENU_LENGTH;i++){
+    //memcpy_P(bits_buff, foods[i], BIG_SPRITE_BYTES);
+    if (i>0) readSpriteFromEEPROM(6,120+(i-1)*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
+    else readSpriteFromEEPROM(7,0,BIG_SPRITE_BYTES);
     u8g2.drawXBM( 5+(i-offset)*16, 21, 10, 10, bits_buff);
   }
   //draw rectangle arround selected option

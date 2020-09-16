@@ -3,7 +3,7 @@
 
 //Menu lenght
 #define MENU_LENGTH 12
-#define FOOD_MENU_LENGTH 6
+#define FOOD_MENU_LENGTH 7
 
 //Sprite Sizes
 #define SMALL_SPRITE_BYTES 7
@@ -45,20 +45,9 @@ static const char menu_names[][10] = {
   "agordo"
   };
 
-static const char food_names[][13] = {
-  "nuligi",
-  "supo",
-  "ananaso",
-  "fromagxo",
-  "tasokuko",
-  "tempomfritoj",
-  "kokido",
-  "pico",
-  "hamburgero"
-  };
+static const char food_names[][13] = { "nuligi","supo","ananaso","fromagxo","tasokuko","kokido","hamburgero" };
   
 //Global Variables
-const int food_len = 6;
 unsigned long up_time = 0;                      //time elapsed since turn-on
 bool time_flags [5];                            //flags for time dependant actions
 unsigned char bits_buff[BIG_SPRITE_BYTES];      //menu sprite buffer variable
@@ -169,7 +158,7 @@ void loop() {
         selected = rotate_sel_R(MENU_LENGTH - 1,selected);
         break;
       case 4:
-        sub_selected = rotate_sel_R(food_len - 1,sub_selected);
+        sub_selected = rotate_sel_R(FOOD_MENU_LENGTH - 1,sub_selected);
       break;
       case 11:
         sub_selected = rotate_sel_R(2,sub_selected);
