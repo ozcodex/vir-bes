@@ -23,7 +23,8 @@ void draw_menu(int pointer){
   //render menu options
   for(int i = offset;i<MENU_LENGTH;i++){
     //load sprites from PROGMEM
-    memcpy_P(bits_buff, menu[i], 20);
+    //memcpy_P(bits_buff, menu[i], 20);
+    readSpriteFromEEPROM(7,i*20,20,bits_buff);
     //print each menu option visible
     u8g2.drawXBM( (i-offset)*10, 0, 10, 10, pointer == i? selected_bits:bits_buff);
   }
