@@ -30,8 +30,14 @@ void writeByteToEEPROM(byte block, byte address, byte data){
 }
 
 void readSpriteFromEEPROM(byte block, byte address, int data_size, byte* output){
-  //data_size is the number of bytes to read
+   Wire.beginTransmission(DEVICE_BASE_ADDRESS+block);
+   Wire.write(int(address));
+   Wire.endTransmission(true);
+
   for( int i = 0; i < data_size; i++ ){
-    output[i] = readByteFromEEPROM(block, address+i);
+    Wire.requestFrom(int(DEVICE_BASE_ADDRESS + block), 1);
+    if (Wire.available())
+    output[i] = Wire.read();
   }
+   
 }
