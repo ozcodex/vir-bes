@@ -1,9 +1,41 @@
 the eeprom device used is 24lc16b, this have 8 blocks of 256 bytes each
 
 the sprites of size 7x7 use 7 bytes (56 bits)
-the sprites of size 10x10 use 20 bytes (16 bits)
-the body description use 1 byte per line, for 18 bytes (144 bits)
+the sprites of size 10x10 use 20 bytes (160 bits)
+the body description use 1 byte per line,
+a whole body have 18 lines that makes 18 bytes (144 bits)
 
 a block can store 36 sprites of 7 bytes, with 4 bytes free,
 or 12 sprites of 20 bytes, whit 16 bytes free,
 or 14 body descriptors (18 bytes) with 4 bytes free,
+
+The block #7 (the last one) contains the 12  menu sprites.
+  0 -  19 Cancel
+ 20 -  39 Data
+ 40 -  59 Status
+ 60 -  79 Food
+ 80 -  99 Play
+100 - 119 Bath
+120 - 139 Sleep
+140 - 159 Clean
+160 - 179 Learn
+180 - 199 Outside
+200 - 219 Medical Care
+220 - 239 Settings
+240 - 255 Free Bytes
+
+The block #6 contains the 6 stats sprites and 6 food sprites.
+  0 -  19 Male
+ 20 -  39 Female
+ 40 -  59 Disciplined
+ 60 -  79 Glutton
+ 80 -  99 Introvert
+100 - 119 Playfull
+120 - 139 Soup
+140 - 159 Pineapple
+160 - 179 Cheese
+180 - 199 Cupcake
+200 - 219 Chicken
+220 - 239 Hamburger
+240 - 255 Free Bytes
+
