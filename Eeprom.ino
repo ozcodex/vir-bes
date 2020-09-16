@@ -10,7 +10,6 @@ void setupEEPROM(){
  }
 
 byte readByteFromEEPROM(byte block, byte address){
-   byte dev_add=DEVICE_BASE_ADDRESS;
    Wire.beginTransmission(DEVICE_BASE_ADDRESS+block);
    Wire.write(int(address));
    Wire.endTransmission(true);
