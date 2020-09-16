@@ -2,12 +2,21 @@
 void draw_initial(){
   int x = 2;
   int y = 9;
-  for(int i=0; i < 8; i++){
-    for(int j=0; j < 3; j++){
+  byte address = 0;
+  for(int i=0; i < 3; i++){
+    for(int j=0; j < 8; j++){
       //read sprite from PROGMEM
-      memcpy_P(bits_buff, initial[i+j*8], 20);
+      address = i*8+j;
+      if (address < 12){
+        //memcpy_P(bits_buff, initial_5[address], 20);
+        readSpriteFromEEPROM(5,address*20,20,bits_buff);
+      }else{
+        address -= 12;
+        //memcpy_P(bits_buff, initial_4[address], 20);
+        readSpriteFromEEPROM(4,address*20,20,bits_buff);
+      }
       //draw sprite
-      u8g2.drawXBM( x+i*10, y+j*10, 10, 10, bits_buff);
+      u8g2.drawXBM( x+j*10, y+i*10, 10, 10, bits_buff);
     }
   }
 }

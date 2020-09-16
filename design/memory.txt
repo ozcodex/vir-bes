@@ -39,6 +39,10 @@ The block #6 contains the 6 stats sprites and 6 food sprites.
 220 - 239 Hamburger
 240 - 255 Free Bytes (16)
 
-The block #5 constains the 12 inital screen sprites
+The block #5 constains the first 12 inital screen sprites
+  0 - 239 Initial Image
+240 - 255 Free Bytes (16)
+
+The block #4 constains the last 12 inital screen sprites
   0 - 239 Initial Image
 240 - 255 Free Bytes (16)
