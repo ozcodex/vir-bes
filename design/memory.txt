@@ -22,7 +22,7 @@ The block #7 (the last one) contains the 12  menu sprites.
 180 - 199 Outside
 200 - 219 Medical Care
 220 - 239 Settings
-240 - 255 Free Bytes
+240 - 255 Free Bytes (16)
 
 The block #6 contains the 6 stats sprites and 6 food sprites.
   0 -  19 Male
@@ -37,4 +37,8 @@ The block #6 contains the 6 stats sprites and 6 food sprites.
 180 - 199 Cupcake
 200 - 219 Chicken
 220 - 239 Hamburger
-240 - 255 Free Bytes
+240 - 255 Free Bytes (16)
+
+The block #5 constains the 12 inital screen sprites
+  0 - 239 Initial Image
+240 - 255 Free Bytes (16)

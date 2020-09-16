@@ -1,11 +1,11 @@
 //Draw initial screen
 void draw_initial(){
-  int x = 5;
-  int y = 7;
-  for(int i=0; i < 7; i++){
-    for(int j=0; j < 4; j++){
+  int x = 2;
+  int y = 9;
+  for(int i=0; i < 8; i++){
+    for(int j=0; j < 3; j++){
       //read sprite from PROGMEM
-      memcpy_P(bits_buff, initial[i+j*7], 20);
+      memcpy_P(bits_buff, initial[i+j*8], 20);
       //draw sprite
       u8g2.drawXBM( x+i*10, y+j*10, 10, 10, bits_buff);
     }
