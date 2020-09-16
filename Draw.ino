@@ -19,9 +19,9 @@ void draw_menu(int pointer){
   //load the inverted sprite of selected optioon
   build_selected(pointer);
   //define menu render offset (for scrolling)
-  int offset = get_offset(pointer,menu_len,8);
+  int offset = get_offset(pointer,MENU_LENGTH,8);
   //render menu options
-  for(int i = offset;i<menu_len;i++){
+  for(int i = offset;i<MENU_LENGTH;i++){
     //load sprites from PROGMEM
     memcpy_P(bits_buff, menu[i], 100);
     //print each menu option visible

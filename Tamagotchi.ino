@@ -1,20 +1,22 @@
 #include <U8g2lib.h>
 #include "sprites.h"
+#define MENU_LENGTH 12
+#define FOOD_MENU_LENGTH 6
 
+//PIN constants definition 
+#define CLOCK_PIN 13
+#define DATA_PIN 11
+#define DC_PIN 10
+#define CE_PIN 9
+#define RESET_PIN 8
 
-const uint8_t CLOCK_PIN = 13,
-              DATA_PIN = 11,
-              DC_PIN = 10,
-              CE_PIN = 9,
-              RESET_PIN = 8;
+#define BL_PIN 3
+#define BTN_A_PIN 6
+#define BTN_B_PIN 5
+#define BTN_C_PIN 4
 
-const uint8_t BL_PIN = 3,
-              BTN_A_PIN = 6,
-              BTN_B_PIN = 5,
-              BTN_C_PIN = 4;
-
-const uint8_t SCL_PIN = A5,
-              SDA_PIN = A4;
+#define SCL_PIN A5
+#define SDA_PIN A4
 
 //Definition of display to use, here is Nokia 5110 84x48
 U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
@@ -22,7 +24,7 @@ U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 =
 
 //Names of menu options, the sprites are located on sprites.h
 static const char menu_names[][10] = {
-  "cxefa",
+  "nuligi",
   "datumoj",
   "stato",
   "mangxo",
@@ -33,7 +35,6 @@ static const char menu_names[][10] = {
   "lernu",
   "eliru",
   "kuracilo",
-  "posxto",
   "agordo"
   };
 
@@ -50,8 +51,7 @@ static const char food_names[][13] = {
   };
   
 //Global Variables
-const int menu_len = 13;          //lenght of menu array, important for loops
-const int food_len = 9;
+const int food_len = 6;
 unsigned long up_time = 0;        //time elapsed since turn-on
 bool time_flags [5];              //flags for time dependant actions
 unsigned char bits_buff[100];     //menu sprite buffer variable
@@ -86,6 +86,7 @@ void setup() {
   pinMode(BTN_A_PIN, INPUT_PULLUP);
   pinMode(BTN_B_PIN, INPUT_PULLUP);
   pinMode(BTN_C_PIN, INPUT_PULLUP); 
+  Serial.begin(9600);
   setupEEPROM(); 
   u8g2.begin();
   u8g2.setContrast(contrast);
@@ -158,7 +159,7 @@ void loop() {
       case 1:
       case 2:
       case 3:
-        selected = rotate_sel_R(menu_len - 1,selected);
+        selected = rotate_sel_R(MENU_LENGTH - 1,selected);
         break;
       case 4:
         sub_selected = rotate_sel_R(food_len - 1,sub_selected);
