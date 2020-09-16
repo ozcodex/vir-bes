@@ -27,9 +27,9 @@ void toRoman(int input, char* output){
 //Prepare the selected option to be rendered
 void build_selected(int pointer){
   //read sprite from PROGMEM
-  memcpy_P(bits_buff, menu[pointer], 100);
+  memcpy_P(bits_buff, menu[pointer], 20);
   //invert each bit
-  for(int i=0;i<100;i++){
+  for(int i=0;i<20;i++){
     selected_bits[i] = ~bits_buff[i];
   }
 }

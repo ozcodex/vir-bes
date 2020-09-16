@@ -5,7 +5,7 @@ void draw_initial(){
   for(int i=0; i < 7; i++){
     for(int j=0; j < 4; j++){
       //read sprite from PROGMEM
-      memcpy_P(bits_buff, initial[i+j*7], 100);
+      memcpy_P(bits_buff, initial[i+j*7], 20);
       //draw sprite
       u8g2.drawXBM( x+i*10, y+j*10, 10, 10, bits_buff);
     }
@@ -23,7 +23,7 @@ void draw_menu(int pointer){
   //render menu options
   for(int i = offset;i<MENU_LENGTH;i++){
     //load sprites from PROGMEM
-    memcpy_P(bits_buff, menu[i], 100);
+    memcpy_P(bits_buff, menu[i], 20);
     //print each menu option visible
     u8g2.drawXBM( (i-offset)*10, 0, 10, 10, pointer == i? selected_bits:bits_buff);
   }
@@ -70,7 +70,7 @@ void draw_virbes(){
   //draw face
   u8g2.setBitmapMode(1);
   anim_off_set = (animation_offset*2)+animation_mark;
-  memcpy_P(bits_buff, lex_face[anim_off_set], 49);
+  memcpy_P(bits_buff, lex_face[anim_off_set], 7);
   u8g2.drawXBM( 40, 23, 7, 7, bits_buff);
   u8g2.setBitmapMode(0);
 }
@@ -97,9 +97,9 @@ void draw_data(){
   u8g2.setCursor(47, 30);
   u8g2.print("D-A"); // IQ. and Constitution Ranking.
 
-  memcpy_P(bits_buff, stats[1], 49); //0: male 1:female
+  memcpy_P(bits_buff, stats[1], 20); //0: male 1:female
   u8g2.drawXBM( 72, 14, 10, 10, bits_buff);
-  memcpy_P(bits_buff, stats[5], 49); //2:disciplined 3:glutton 4:introvert 5:playful
+  memcpy_P(bits_buff, stats[5], 20); //2:disciplined 3:glutton 4:introvert 5:playful
   u8g2.drawXBM( 72, 26, 10, 10, bits_buff);
   
 }
@@ -137,11 +137,11 @@ void draw_status(){
   u8g2.setCursor(65, 20);
   u8g2.print(weight);
   //Draw Hearts
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6),2)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6),2)], 7);
   u8g2.drawXBM( 60, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-2,2)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-2,2)], 7);
   u8g2.drawXBM( 68, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-4,2)], 49);
+  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-4,2)], 7);
   u8g2.drawXBM( 76, 31, 7, 7, bits_buff);
 
 }
@@ -151,7 +151,7 @@ void draw_foods(int pointer){
   //draw foods
   int offset = get_offset(pointer,food_len,5);
   for (int i = offset;i < food_len;i++){
-    memcpy_P(bits_buff, foods[i], 100);
+    memcpy_P(bits_buff, foods[i], 20);
     u8g2.drawXBM( 5+(i-offset)*16, 21, 10, 10, bits_buff);
   }
   //draw rectangle arround selected option

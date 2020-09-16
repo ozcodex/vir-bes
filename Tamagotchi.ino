@@ -54,8 +54,8 @@ static const char food_names[][13] = {
 const int food_len = 6;
 unsigned long up_time = 0;        //time elapsed since turn-on
 bool time_flags [5];              //flags for time dependant actions
-unsigned char bits_buff[100];     //menu sprite buffer variable
-unsigned char selected_bits[100]; //temporal sprite of selected menu option
+unsigned char bits_buff[20];     //menu sprite buffer variable
+unsigned char selected_bits[20]; //temporal sprite of selected menu option
 int animation_mark = 0;           //temp mark to know what sprite to draw
 int animation_loop = 0;           //number of times to repeat the animation before go back to standby
 int animation_offset = 0;         //the current animation
@@ -94,7 +94,7 @@ void setup() {
 }
 
 void loop() {
-  up_time = millis(); //caution: max=4294967295 (49 days 17 hours)
+  up_time = millis(); //caution: max=429767295 (7 days 17 hours)
   //Write the backlight status
   digitalWrite(BL_PIN, backlight?HIGH:LOW);
   //Configure graphics
