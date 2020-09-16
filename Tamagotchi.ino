@@ -1,7 +1,14 @@
 #include <U8g2lib.h>
 #include "sprites.h"
+
+//Menu lenght
 #define MENU_LENGTH 12
 #define FOOD_MENU_LENGTH 6
+
+//Sprite Sizes
+#define SMALL_SPRITE_BYTES 7
+#define BIG_SPRITE_BYTES 20
+
 
 //PIN constants definition 
 #define CLOCK_PIN 13
@@ -52,15 +59,15 @@ static const char food_names[][13] = {
   
 //Global Variables
 const int food_len = 6;
-unsigned long up_time = 0;        //time elapsed since turn-on
-bool time_flags [5];              //flags for time dependant actions
-unsigned char bits_buff[20];     //menu sprite buffer variable
-unsigned char selected_bits[20]; //temporal sprite of selected menu option
-int animation_mark = 0;           //temp mark to know what sprite to draw
-int animation_loop = 0;           //number of times to repeat the animation before go back to standby
-int animation_offset = 0;         //the current animation
-int selected = 0;                 //current menu option selected
-int sub_selected = 0;             //for sub menus, the selected option
+unsigned long up_time = 0;                      //time elapsed since turn-on
+bool time_flags [5];                            //flags for time dependant actions
+unsigned char bits_buff[BIG_SPRITE_BYTES];      //menu sprite buffer variable
+unsigned char selected_bits[BIG_SPRITE_BYTES];  //temporal sprite of selected menu option
+int animation_mark = 0;                         //temp mark to know what sprite to draw
+int animation_loop = 0;                         //number of times to repeat the animation before go back to standby
+int animation_offset = 0;                       //the current animation
+int selected = 0;                               //current menu option selected
+int sub_selected = 0;                           //for sub menus, the selected option
 bool pull_down[] = {false,false,false};
 int btn_clk_counter[] = {0,0,0};
 //configuration variables

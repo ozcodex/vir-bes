@@ -1,23 +1,32 @@
+
 //Draw initial screen
 void draw_initial(){
-  int x = 2;
-  int y = 9;
   byte address = 0;
   for(int i=0; i < 3; i++){
     for(int j=0; j < 8; j++){
-      //read sprite from PROGMEM
+      //read sprite from EEPROM
       address = i*8+j;
       if (address < 12){
-        //memcpy_P(bits_buff, initial_5[address], 20);
-        readSpriteFromEEPROM(5,address*20,20,bits_buff);
+        readSpriteFromEEPROM(5,address*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
       }else{
         address -= 12;
-        //memcpy_P(bits_buff, initial_4[address], 20);
-        readSpriteFromEEPROM(4,address*20,20,bits_buff);
+        readSpriteFromEEPROM(4,address*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
       }
       //draw sprite
-      u8g2.drawXBM( x+j*10, y+i*10, 10, 10, bits_buff);
+      u8g2.drawXBM( 2+j*10, 9+i*10, 10, 10, bits_buff);
     }
+  }
+}
+
+
+//Prepare the selected option to be rendered
+void build_selected(int pointer){
+  //read sprite from PROGMEM
+  //memcpy_P(bits_buff, menu[pointer], 20);
+  readSpriteFromEEPROM(7,pointer*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
+  //invert each bit
+  for(int i=0;i<20;i++){
+    selected_bits[i] = ~bits_buff[i];
   }
 }
 
@@ -31,9 +40,8 @@ void draw_menu(int pointer){
   int offset = get_offset(pointer,MENU_LENGTH,8);
   //render menu options
   for(int i = offset;i<MENU_LENGTH;i++){
-    //load sprites from PROGMEM
-    //memcpy_P(bits_buff, menu[i], 20);
-    readSpriteFromEEPROM(7,i*20,20,bits_buff);
+    //load sprites from EEPROM
+    readSpriteFromEEPROM(7,i*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
     //print each menu option visible
     u8g2.drawXBM( (i-offset)*10, 0, 10, 10, pointer == i? selected_bits:bits_buff);
   }
@@ -107,9 +115,9 @@ void draw_data(){
   u8g2.setCursor(47, 30);
   u8g2.print("D-A"); // IQ. and Constitution Ranking.
 
-  memcpy_P(bits_buff, stats[1], 20); //0: male 1:female
+  memcpy_P(bits_buff, stats[1], BIG_SPRITE_BYTES); //0: male 1:female
   u8g2.drawXBM( 72, 14, 10, 10, bits_buff);
-  memcpy_P(bits_buff, stats[5], 20); //2:disciplined 3:glutton 4:introvert 5:playful
+  memcpy_P(bits_buff, stats[5], BIG_SPRITE_BYTES); //2:disciplined 3:glutton 4:introvert 5:playful
   u8g2.drawXBM( 72, 26, 10, 10, bits_buff);
   
 }
@@ -161,7 +169,7 @@ void draw_foods(int pointer){
   //draw foods
   int offset = get_offset(pointer,food_len,5);
   for (int i = offset;i < food_len;i++){
-    memcpy_P(bits_buff, foods[i], 20);
+    memcpy_P(bits_buff, foods[i], BIG_SPRITE_BYTES);
     u8g2.drawXBM( 5+(i-offset)*16, 21, 10, 10, bits_buff);
   }
   //draw rectangle arround selected option

@@ -24,17 +24,6 @@ void toRoman(int input, char* output){
   }
 }
 
-//Prepare the selected option to be rendered
-void build_selected(int pointer){
-  //read sprite from PROGMEM
-  //memcpy_P(bits_buff, menu[pointer], 20);
-  readSpriteFromEEPROM(7,pointer*20,20,bits_buff);
-  //invert each bit
-  for(int i=0;i<20;i++){
-    selected_bits[i] = ~bits_buff[i];
-  }
-}
-
 //Define the offset to scroll menu
 int get_offset(int sel,int list_len,int max_items){
   //max items is the lenght of menu bar

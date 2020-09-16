@@ -20,7 +20,6 @@ byte readByteFromEEPROM(byte block, byte address){
      return Wire.read();
 }
 
-
 void writeByteToEEPROM(byte block, byte address, byte data){
   Wire.beginTransmission(DEVICE_BASE_ADDRESS+block);
   Wire.write(address);
@@ -29,7 +28,7 @@ void writeByteToEEPROM(byte block, byte address, byte data){
   delay(10);
 }
 
-void readSpriteFromEEPROM(byte block, byte address, int data_size, byte* output){
+void readSpriteFromEEPROM(byte block, byte address, int data_size){
    Wire.beginTransmission(DEVICE_BASE_ADDRESS+block);
    Wire.write(int(address));
    Wire.endTransmission(true);
@@ -37,7 +36,7 @@ void readSpriteFromEEPROM(byte block, byte address, int data_size, byte* output)
   for( int i = 0; i < data_size; i++ ){
     Wire.requestFrom(int(DEVICE_BASE_ADDRESS + block), 1);
     if (Wire.available())
-    output[i] = Wire.read();
+    bits_buff[i] = Wire.read();
   }
    
 }
