@@ -79,6 +79,8 @@ byte generation = 1;    //max:17
 byte evolution = 3;     //max 4
 byte iq = 3;            //max 4
 byte constitution = 0;  //max 4
+bool is_female= false;  //else male
+byte main_char = 2;     //max 3
 
 //status variables
 byte hungry = 30;       // max: 255

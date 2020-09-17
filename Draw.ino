@@ -115,13 +115,13 @@ void draw_data(){
   u8g2.print(evolution_names[evolution]);   //ovo, infano, juna, matura, maljuna
   u8g2.setCursor(47, 30);
   // IQ. and Constitution Ranking.
-  u8g2.print(grades[iq]); 
+  u8g2.print(grades[iq]);
   u8g2.print("-"); 
   u8g2.print(grades[constitution]); 
   
-  memcpy_P(bits_buff, stats[1], BIG_SPRITE_BYTES); //0: male 1:female
+  memcpy_P(bits_buff, stats[int(is_female)], BIG_SPRITE_BYTES); //0: male 1:female
   u8g2.drawXBM( 72, 14, 10, 10, bits_buff);
-  memcpy_P(bits_buff, stats[5], BIG_SPRITE_BYTES); //2:disciplined 3:glutton 4:introvert 5:playful
+  memcpy_P(bits_buff, stats[main_char+2], BIG_SPRITE_BYTES); //0:disciplined 1:glutton 2:introvert 3:playful
   u8g2.drawXBM( 72, 26, 10, 10, bits_buff);
   
 }
