@@ -97,9 +97,10 @@ void draw_virbes(){
 void draw_data(){
   u8g2.setCursor(3, 12);
   u8g2.print("Nomo:");
-  u8g2.print("LEX ");
+  u8g2.print(name);
+  u8g2.print(" ");
   char gen[6];
-  toRoman(17,gen); //max: 17
+  toRoman(generation,gen); //max: 17
   u8g2.print(gen);
 
   u8g2.setCursor(6, 22);
@@ -111,10 +112,13 @@ void draw_data(){
   u8g2.drawRFrame(41,21,28,18,2);
 
   u8g2.setCursor(3, 29);
-  u8g2.print("maljuna");   //ovo, bebo, infano, juna, matura, maljuna
+  u8g2.print(evolution_names[evolution]);   //ovo, infano, juna, matura, maljuna
   u8g2.setCursor(47, 30);
-  u8g2.print("D-A"); // IQ. and Constitution Ranking.
-
+  // IQ. and Constitution Ranking.
+  u8g2.print(grades[iq]); 
+  u8g2.print("-"); 
+  u8g2.print(grades[constitution]); 
+  
   memcpy_P(bits_buff, stats[1], BIG_SPRITE_BYTES); //0: male 1:female
   u8g2.drawXBM( 72, 14, 10, 10, bits_buff);
   memcpy_P(bits_buff, stats[5], BIG_SPRITE_BYTES); //2:disciplined 3:glutton 4:introvert 5:playful

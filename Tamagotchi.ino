@@ -26,8 +26,8 @@
 #define SDA_PIN A4
 
 //Definition of display to use, here is Nokia 5110 84x48
-U8G2_PCD8544_84X48_1_4W_HW_SPI u8g2 = 
-  U8G2_PCD8544_84X48_1_4W_HW_SPI(U8G2_R0, CE_PIN, DC_PIN, RESET_PIN);
+U8G2_PCD8544_84X48_2_4W_HW_SPI u8g2 = 
+  U8G2_PCD8544_84X48_2_4W_HW_SPI(U8G2_R0, CE_PIN, DC_PIN, RESET_PIN);
 
 //Names of menu options, the sprites are located on sprites.h
 static const char menu_names[][10] = {
@@ -45,37 +45,47 @@ static const char menu_names[][10] = {
   "agordo"
   };
 
-static const char food_names[][13] = { "nuligi","supo","ananaso","fromagxo","tasokuko","kokido","hamburgero" };
+static const char food_names[][11] = { "nuligi","supo","ananaso","fromagxo","tasokuko","kokido","hamburgero" };
+static const char evolution_names[][8] = { "ovo", "infano", "juna", "matura", "maljuna" };
+static const char grades[] = {'D','C','B','A','S' };
   
 //Global Variables
+bool redraw = true;                             //indicates the need of draw again the view
 unsigned long up_time = 0;                      //time elapsed since turn-on
 bool time_flags [5];                            //flags for time dependant actions
 unsigned char bits_buff[BIG_SPRITE_BYTES];      //menu sprite buffer variable
 unsigned char selected_bits[BIG_SPRITE_BYTES];  //temporal sprite of selected menu option
-int animation_mark = 0;                         //temp mark to know what sprite to draw
-int animation_loop = 0;                         //number of times to repeat the animation before go back to standby
-int animation_offset = 0;                       //the current animation
-int selected = 0;                               //current menu option selected
-int sub_selected = 0;                           //for sub menus, the selected option
+byte animation_mark = 0;                        //temp mark to know what sprite to draw
+byte animation_loop = 0;                        //number of times to repeat the animation before go back to standby
+byte animation_offset = 0;                      //the current animation
+byte selected = 0;                              //current menu option selected
+byte sub_selected = 0;                          //for sub menus, the selected option
 bool pull_down[] = {false,false,false};
 int btn_clk_counter[] = {0,0,0};
 //configuration variables
-bool backlight = true;            //status of backlight
-int contrast = 135;
-int mode = 0;                     /* stage of game:
-                                   * 0: initial screen
-                                   * 1: main menu view
-                                   * 2: status view
-                                   * 3: food view
-                                   * 11: settings
-                                   */
+bool backlight = true;                          //status of backlight
+byte contrast = 135;
+int mode = 0;   /* stage of game:
+                 * 0: initial screen
+                 * 1: main menu view
+                 * 2: status view
+                 * 3: food view
+                 * 11: settings
+                 */
 //Virbes data:
+//char definition
+char name[] = "LEX";
+byte generation = 1;    //max:17
+byte evolution = 3;     //max 4
+byte iq = 3;            //max 4
+byte constitution = 0;  //max 4
+
 //status variables
-int hungry = 30;   // max: 255
-int joy = 128;     // max: 255 
-int age = 0;     // max: 255
-int weight = 25;  // max: 255
-int health = 128;   // max: 255
+byte hungry = 30;       // max: 255
+byte joy = 128;         // max: 255 
+byte age = 0;           // max: 255
+byte weight = 25;       // max: 255
+byte health = 128;      // max: 255
 
 void setup() {
   pinMode(BL_PIN, OUTPUT);
@@ -98,8 +108,10 @@ void loop() {
   u8g2.setFontPosTop();
   u8g2.setContrast(contrast);
   //Manage graphics
-  u8g2.firstPage();
-  do { draw(); } while ( u8g2.nextPage() );
+  if (redraw){
+    u8g2.firstPage();
+    do { draw(); } while ( u8g2.nextPage() );
+  }
 
   //Trigger the time dependant actions, but only after start the game
   if (mode > 0) time_triggers();
@@ -109,6 +121,7 @@ void loop() {
 
   //Trigger Button A Action
   if (pull_down[0] && btn_clk_counter[0] == 1){
+    redraw = true;
     switch (mode){
       case 0:
         back_to_main();
@@ -126,6 +139,7 @@ void loop() {
   }
   //Trigger Button B Action
   if (pull_down[1]  && btn_clk_counter[1] == 1){
+    redraw = true;
     switch (mode){
       case 0:
         back_to_main();
@@ -136,8 +150,10 @@ void loop() {
         select_menu_option();
         break;
       case 4:
-        if (sub_selected > 0) eat_food(sub_selected); //0 is the back action
-        change_animation(1);
+        if (sub_selected > 0) {
+          eat_food(sub_selected); //0 is the back action
+          change_animation(1);
+        }
         back_to_main();
         break;
       case 11:
@@ -148,6 +164,7 @@ void loop() {
   }
   //Trigger Button C Action
   if (pull_down[2]  && btn_clk_counter[2] == 1){
+    redraw = true;
     switch (mode){
       case 0:
         back_to_main();
@@ -169,6 +186,8 @@ void loop() {
 
 //Main Draw Function
 void draw() {
+  //after draw there is no need to draw until something change
+  redraw = false;
   switch (mode){
   case 0:
     draw_initial();
