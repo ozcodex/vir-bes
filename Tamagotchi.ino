@@ -4,11 +4,13 @@
 //Menu lenght
 #define MENU_LENGTH 12
 #define FOOD_MENU_LENGTH 7
+#define OPTIONS_MENU_LENGTH 3
 
 //Sprite Sizes
 #define SMALL_SPRITE_BYTES 7
 #define BIG_SPRITE_BYTES 20
 
+#define BUTTON_TIMEOUT 50
 
 //PIN constants definition 
 #define CLOCK_PIN 13
@@ -76,11 +78,11 @@ int mode = 0;   /* stage of game:
 //char definition
 char name[] = "LEX";
 byte generation = 1;    //max:17
-byte evolution = 3;     //max 4
+byte evolution = 3;     //0:ovo, 1:infano, 2:juna, 3:matura, 4:maljuna
 byte iq = 3;            //max 4
 byte constitution = 0;  //max 4
 bool is_female= false;  //else male
-byte main_char = 2;     //max 3
+byte main_char = 2;     //0:disciplined 1:glutton 2:introvert 3:playful
 
 //status variables
 byte hungry = 30;       // max: 255
@@ -134,7 +136,7 @@ void loop() {
         selected = rotate_sel_L(0,selected);
         break;
       case 4:
-      case 11:
+      case 12:
         sub_selected = rotate_sel_L(0,sub_selected);
         break;
     }
@@ -158,7 +160,7 @@ void loop() {
         }
         back_to_main();
         break;
-      case 11:
+      case 12:
         change_settings(sub_selected);
         break;
       
@@ -179,8 +181,8 @@ void loop() {
       case 4:
         sub_selected = rotate_sel_R(FOOD_MENU_LENGTH - 1,sub_selected);
       break;
-      case 11:
-        sub_selected = rotate_sel_R(2,sub_selected);
+      case 12:
+        sub_selected = rotate_sel_R(OPTIONS_MENU_LENGTH,sub_selected);
       break;
     }
   }
@@ -220,7 +222,7 @@ void draw() {
     draw_virbes();
     draw_help();
     break;
-  case 11:
+  case 12:
     draw_menu(selected);
     draw_options(sub_selected);
     break;

@@ -112,16 +112,16 @@ void draw_data(){
   u8g2.drawRFrame(41,21,28,18,2);
 
   u8g2.setCursor(3, 29);
-  u8g2.print(evolution_names[evolution]);   //ovo, infano, juna, matura, maljuna
+  u8g2.print(evolution_names[evolution]);   
   u8g2.setCursor(47, 30);
   // IQ. and Constitution Ranking.
   u8g2.print(grades[iq]);
   u8g2.print("-"); 
   u8g2.print(grades[constitution]); 
   
-  memcpy_P(bits_buff, stats[int(is_female)], BIG_SPRITE_BYTES); //0: male 1:female
+  readSpriteFromEEPROM(6,int(is_female)*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
   u8g2.drawXBM( 72, 14, 10, 10, bits_buff);
-  memcpy_P(bits_buff, stats[main_char+2], BIG_SPRITE_BYTES); //0:disciplined 1:glutton 2:introvert 3:playful
+  readSpriteFromEEPROM(6,(main_char+2)*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
   u8g2.drawXBM( 72, 26, 10, 10, bits_buff);
   
 }
@@ -185,7 +185,7 @@ void draw_foods(int pointer){
 //Options draw function
 void draw_options(int pointer){
   //first option, backlight configuration
-  u8g2.setCursor(0, 12);
+  u8g2.setCursor(0, 11);
   u8g2.print(pointer == 0?">":"");
   u8g2.print("Lumo: ");
   u8g2.print(backlight?"on":"off");
@@ -194,10 +194,14 @@ void draw_options(int pointer){
   u8g2.print(pointer == 1?">":"");
   u8g2.print("Kontrasto: ");
   u8g2.print(contrast);
+  //third option, contrast configuration
+  u8g2.setCursor(0, 28);
+  u8g2.print(pointer == 2?">":"");
+  u8g2.print("Konservi Datumojn!");
   
   //last option, exit
-  u8g2.setCursor(0, 28);
-  u8g2.print(sub_selected == 2?">":"");
+  u8g2.setCursor(0, 36);
+  u8g2.print(sub_selected == 3?">":"");
   u8g2.print("Forlasi!");
   }
 
