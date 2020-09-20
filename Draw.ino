@@ -37,9 +37,9 @@ void draw_menu(int pointer){
   //load the inverted sprite of selected optioon
   build_selected(pointer);
   //define menu render offset (for scrolling)
-  int offset = get_offset(pointer,MENU_LENGTH,8);
+  int offset = get_offset(pointer,MENU_LENGTH,MENU_VISIBLE_ITEMS);
   //render menu options
-  for(int i = offset;i<MENU_LENGTH;i++){
+  for(int i = offset;i<MENU_VISIBLE_ITEMS+offset;i++){
     //load sprites from EEPROM
     readSpriteFromEEPROM(7,i*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
     //print each menu option visible
@@ -224,10 +224,7 @@ void draw_help(){
     case 4:
       u8g2.print(food_names[sub_selected]);
   }
-  //write the name of selected option
-  
-  u8g2.setCursor(75, 40);
-  //u8g2.print(selected);
+
   //reset the draw mode and color
   u8g2.setFontMode(0);
   u8g2.setDrawColor(1);

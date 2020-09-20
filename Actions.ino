@@ -46,6 +46,7 @@ int process_animation(){
   if (animation_loop < 0){
     change_animation(0);  
   }
+  redraw = true; 
 }
 
 void change_animation(int index){

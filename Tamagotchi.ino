@@ -5,6 +5,7 @@
 #define MENU_LENGTH 12
 #define FOOD_MENU_LENGTH 7
 #define OPTIONS_MENU_LENGTH 3
+#define MENU_VISIBLE_ITEMS 8
 
 //Sprite Sizes
 #define SMALL_SPRITE_BYTES 7
