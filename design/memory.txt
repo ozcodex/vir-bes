@@ -1,48 +1,52 @@
 the eeprom device used is 24lc16b, this have 8 blocks of 256 bytes each
 
-the sprites of size 7x7 use 7 bytes (56 bits)
-the sprites of size 10x10 use 20 bytes (160 bits)
+the sprites of size 8x8 use 8 bytes (64 bits)
 the body description use 1 byte per line,
 a whole body have 18 lines that makes 18 bytes (144 bits)
 
-a block can store 36 sprites of 7 bytes, with 4 bytes free,
-or 12 sprites of 20 bytes, whit 16 bytes free,
-or 14 body descriptors (18 bytes) with 4 bytes free,
+a block can store exactly 32 normal (8x8) sprites
+a block can store 14 body descriptors with 4 bytes free.
 
-The block #7 (the last one) contains the 12  menu sprites.
-  0 -  19 Cancel
- 20 -  39 Data
- 40 -  59 Status
- 60 -  79 Food
- 80 -  99 Play
-100 - 119 Bath
-120 - 139 Sleep
-140 - 159 Clean
-160 - 179 Learn
-180 - 199 Outside
-200 - 219 Medical Care
-220 - 239 Settings
-240 - 255 Free Bytes (16)
+The Block #7 Will contain the initial image.
 
-The block #6 contains the 6 stats sprites and 6 food sprites.
-  0 -  19 Male
- 20 -  39 Female
- 40 -  59 Disciplined
- 60 -  79 Glutton
- 80 -  99 Introvert
-100 - 119 Playfull
-120 - 139 Soup
-140 - 159 Pineapple
-160 - 179 Cheese
-180 - 199 Cupcake
-200 - 219 Chicken
-220 - 239 Hamburger
-240 - 255 Free Bytes (16)
+The Block #6 Will contain the next group of sprites:
+Menu: 15 Sprites
+Data: 9 Sprites
+  Gender: 2 Sprites
+  Attributes: 4 Sprites
+  Hearts: 3 Sprites
+Food: 8 Sprites
 
-The block #5 constains the first 12 inital screen sprites
-  0 - 239 Initial Image
-240 - 255 Free Bytes (16)
+  0 -   7 : Cancel
+  8 -  15 : Home
+ 16 -  23 : Data 
+ 24 -  31 : Status
+ 32 -  39 : Food
+ 40 -  47 : Play
+ 48 -  55 : Bath
+ 56 -  63 : Sleep
+ 64 -  71 : Clean
+ 72 -  79 : Learn
+ 80 -  87 : Outside
+ 88 -  95 : Medical
+ 96 - 103 : Friends
+104 - 111 : Mail
+112 - 119 : Settings
+120 - 127 : Male
+128 - 135 : Female
+136 - 143 : Disciplined
+144 - 151 : Glutton
+152 - 159 : Introvert
+160 - 167 : Playful
+168 - 175 : Empty
+176 - 183 : Half
+184 - 191 : Full
+192 - 199 : Apple
+200 - 207 : Soup
+208 - 215 : Cheese
+216 - 223 : Chicken
+224 - 231 : hamburger
+232 - 239 : Doughnut
+240 - 247 : Palette
+248 - 255 : Cupcake
 
-The block #4 constains the last 12 inital screen sprites
-  0 - 239 Initial Image
-240 - 255 Free Bytes (16)
