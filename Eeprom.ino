@@ -28,15 +28,17 @@ void writeByteToEEPROM(byte block, byte address, byte data){
   delay(10);
 }
 
-void readSpriteFromEEPROM(byte block, byte address, int data_size){
+void readSpriteFromEEPROM(byte block, byte position){
+   // position goes from 0 to 31
+   if ( position >= 32 ) return;
    Wire.beginTransmission(DEVICE_BASE_ADDRESS+block);
-   Wire.write(int(address));
+   Wire.write(int(position * SPRITE_SIZE));
    Wire.endTransmission(true);
 
-  for( int i = 0; i < data_size; i++ ){
+  for( int i = 0; i < SPRITE_SIZE; i++ ){
     Wire.requestFrom(int(DEVICE_BASE_ADDRESS + block), 1);
     if (Wire.available())
-    bits_buff[i] = Wire.read();
+    loaded_sprite[i] = Wire.read();
   }
    
 }
