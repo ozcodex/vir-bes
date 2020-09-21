@@ -161,10 +161,9 @@ void draw_foods(int pointer){
   //draw foods
   int offset = get_offset(pointer,FOOD_MENU_LENGTH,5);
   for (int i = offset;i < FOOD_MENU_LENGTH;i++){
-    //memcpy_P(bits_buff, foods[i], BIG_SPRITE_BYTES);
-    //if (i>0) ////readSpriteFromEEPROM(6,120+(i-1)*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
-    //else ////readSpriteFromEEPROM(7,0,BIG_SPRITE_BYTES);
-    u8g2.drawXBM( 5+(i-offset)*16, 21, 10, 10, bits_buff);
+    if (i == 0) readSpriteFromEEPROM(6,0);
+    else readSpriteFromEEPROM(6,24+(i-1));
+    u8g2.drawXBM( 5+(i-offset)*16+1, 22, 8, 8, loaded_sprite);
   }
   //draw rectangle arround selected option
   u8g2.drawRFrame(3+16*(pointer-offset),19,14,14,2);
@@ -173,22 +172,22 @@ void draw_foods(int pointer){
 //Options draw function
 void draw_options(int pointer){
   //first option, backlight configuration
-  u8g2.setCursor(0, 11);
+  u8g2.setCursor(0, 12);
   u8g2.print(pointer == 0?">":"");
   u8g2.print("Lumo: ");
   u8g2.print(backlight?"on":"off");
   //second option, contrast configuration
-  u8g2.setCursor(0, 20);
+  u8g2.setCursor(0, 21);
   u8g2.print(pointer == 1?">":"");
   u8g2.print("Kontrasto: ");
   u8g2.print(contrast);
   //third option, contrast configuration
-  u8g2.setCursor(0, 28);
+  u8g2.setCursor(0, 30);
   u8g2.print(pointer == 2?">":"");
   u8g2.print("Konservi Datumojn!");
   
   //last option, exit
-  u8g2.setCursor(0, 36);
+  u8g2.setCursor(0, 39);
   u8g2.print(sub_selected == 3?">":"");
   u8g2.print("Forlasi!");
   }
@@ -196,12 +195,12 @@ void draw_options(int pointer){
 //draws help text in the last line
 void draw_help(){
   //draw black rectangle
-  u8g2.drawBox(0,40,84,8);
+  u8g2.drawBox(0,38,84,10);
   //change draw mode and color for inverted
   u8g2.setFontMode(1);
   u8g2.setDrawColor(0);
   //set the cursor in position
-  u8g2.setCursor(1, 40);
+  u8g2.setCursor(1, 39);
   //draw matching text
   switch(mode){
     case 1:

@@ -104,6 +104,9 @@ void change_settings(int index){
       }
   }
   if (index == 2) {
+    //save settings();
+  }  
+  if (index == 3) {
     back_to_main();
   }  
 }

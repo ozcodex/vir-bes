@@ -3,7 +3,7 @@
 
 //Menu lenght
 #define MENU_LENGTH 14
-#define FOOD_MENU_LENGTH 8
+#define FOOD_MENU_LENGTH 9
 #define OPTIONS_MENU_LENGTH 3
 #define MENU_VISIBLE_ITEMS 8
 
@@ -12,7 +12,7 @@
 #define BIG_SPRITE_BYTES 20
 #define SMALL_SPRITE_BYTES 7
 
-#define BUTTON_TIMEOUT 50
+#define BUTTON_TIMEOUT 70
 
 //PIN constants definition 
 #define CLOCK_PIN 13
@@ -34,8 +34,8 @@ U8G2_PCD8544_84X48_2_4W_HW_SPI u8g2 =
   U8G2_PCD8544_84X48_2_4W_HW_SPI(U8G2_R0, CE_PIN, DC_PIN, RESET_PIN);
 
 //Names of menu options, the sprites are located on sprites.h
-static const char menu_names[][10] = {
-  "nuligi",
+static const char menu_names[][9] = {
+  "cxefa",
   "datumoj",
   "stato",
   "mangxo",
@@ -46,9 +46,22 @@ static const char menu_names[][10] = {
   "lernu",
   "eliru",
   "kuracilo",
+  "amikoj",
+  "posxto",
   "agordo"
   };
-static const char food_names[][11] = { "nuligi","supo","ananaso","fromagxo","tasokuko","kokido","hamburgero" };
+static const char food_names[][11] = { 
+  "nuligi",
+  "pomo",
+  "supo",
+  "fromagxo",
+  "kokido",
+  "hamburgero",
+  "ringbulko",
+  "glaciajxo",
+  "tasokuko"
+  };
+
 static const char evolution_names[][8] = { "ovo", "infano", "juna", "matura", "maljuna" };
 static const char grades[] = {'D','C','B','A','S' };
 
@@ -139,7 +152,7 @@ void loop() {
         selected = rotate_sel_L(0,selected);
         break;
       case 4:
-      case 12:
+      case 14:
         sub_selected = rotate_sel_L(0,sub_selected);
         break;
     }
@@ -163,7 +176,7 @@ void loop() {
         }
         back_to_main();
         break;
-      case 12:
+      case 14:
         change_settings(sub_selected);
         break;
       
@@ -184,7 +197,7 @@ void loop() {
       case 4:
         sub_selected = rotate_sel_R(FOOD_MENU_LENGTH - 1,sub_selected);
       break;
-      case 12:
+      case 14:
         sub_selected = rotate_sel_R(OPTIONS_MENU_LENGTH,sub_selected);
       break;
     }
@@ -225,7 +238,7 @@ void draw() {
     draw_virbes();
     draw_help();
     break;
-  case 12:
+  case 14:
     draw_menu(selected);
     draw_options(sub_selected);
     break;
