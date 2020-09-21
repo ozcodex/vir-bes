@@ -2,8 +2,8 @@
 #include "sprites.h"
 
 //Menu lenght
-#define MENU_LENGTH 12
-#define FOOD_MENU_LENGTH 7
+#define MENU_LENGTH 14
+#define FOOD_MENU_LENGTH 8
 #define OPTIONS_MENU_LENGTH 3
 #define MENU_VISIBLE_ITEMS 8
 

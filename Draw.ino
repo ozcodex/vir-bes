@@ -7,21 +7,8 @@ void draw_initial(){
   for(int i=0; i < 32; i++){
       //read sprite from EEPROM
       readSpriteFromEEPROM(7,i);
-
       //draw sprite
       u8g2.drawXBM( LOGO_X_OFFSET, LOGO_Y_OFFSET+i, 64, 1, loaded_sprite);
-  }
-}
-
-
-//Prepare the selected option to be rendered
-void build_selected(int pointer){
-  //read sprite from PROGMEM
-  //memcpy_P(bits_buff, menu[pointer], 20);
-  ////readSpriteFromEEPROM(7,pointer*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
-  //invert each bit
-  for(int i=0;i<20;i++){
-    selected_bits[i] = ~bits_buff[i];
   }
 }
 
@@ -30,15 +17,21 @@ void draw_menu(int pointer){
   //menu separator
   u8g2.drawLine(0, 10, 84, 10);
   //load the inverted sprite of selected optioon
-  build_selected(pointer);
   //define menu render offset (for scrolling)
   int offset = get_offset(pointer,MENU_LENGTH,MENU_VISIBLE_ITEMS);
   //render menu options
   for(int i = offset;i<MENU_VISIBLE_ITEMS+offset;i++){
+    //draw a box and invert colors for selected item
+    if ( i == pointer ){
+      u8g2.drawBox((i-offset)*10,0,10,10);
+      u8g2.setDrawColor(0);
+    }
     //load sprites from EEPROM
-    ////readSpriteFromEEPROM(7,i*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
+    readSpriteFromEEPROM(6,i+1);
     //print each menu option visible
-    u8g2.drawXBM( (i-offset)*10, 0, 10, 10, pointer == i? selected_bits:bits_buff);
+    u8g2.drawXBM( (i-offset)*10+1, 1, 8, 8, loaded_sprite);
+    //restore drawing color
+    u8g2.setDrawColor(1);
   }
 }
 
