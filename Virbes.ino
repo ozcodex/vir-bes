@@ -93,8 +93,8 @@ int mode = 0;   /* stage of game:
 //Virbes data:
 //char definition
 char name[] = "LEX";
-byte generation = 1;    //max:17
-byte evolution = 3;     //0:ovo, 1:infano, 2:juna, 3:matura, 4:maljuna
+byte generation = 8;    //max:17 min:1
+byte evolution = 4;     //0:ovo, 1:infano, 2:juna, 3:matura, 4:maljuna
 byte iq = 3;            //max 4
 byte constitution = 0;  //max 4
 bool is_female= false;  //else male
@@ -105,7 +105,7 @@ byte hungry = 30;       // max: 255
 byte joy = 128;         // max: 255 
 byte age = 0;           // max: 255
 byte weight = 25;       // max: 255
-byte health = 128;      // max: 255
+byte health = 200;      // max: 255
 
 void setup() {
   pinMode(BL_PIN, OUTPUT);

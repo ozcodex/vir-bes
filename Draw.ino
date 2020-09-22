@@ -81,36 +81,36 @@ void draw_virbes(){
   u8g2.setBitmapMode(0);
 }
 
-//data of virbes
+//draw the data of virbes
 void draw_data(){
-  u8g2.setCursor(3, 12);
-  u8g2.print("Nomo:");
+  u8g2.setCursor(3, 11);
+  u8g2.print("Nomo: ");
   u8g2.print(name);
   u8g2.print(" ");
   char gen[6];
   toRoman(generation,gen); //max: 17
   u8g2.print(gen);
 
-  u8g2.setCursor(6, 22);
+  u8g2.setCursor(6, 20);
   u8g2.print("stadio");  //evoluo
-  u8g2.setCursor(43, 22);
+  u8g2.setCursor(43, 20);
   u8g2.print("speco");
 
-  u8g2.drawRFrame(1,21,38,18,2);
-  u8g2.drawRFrame(41,21,28,18,2);
+  u8g2.drawRFrame(1,19,38,18,2);
+  u8g2.drawRFrame(41,19,28,18,2);
 
-  u8g2.setCursor(3, 29);
+  u8g2.setCursor(3, 27);
   u8g2.print(evolution_names[evolution]);   
-  u8g2.setCursor(47, 30);
+  u8g2.setCursor(47, 28);
   // IQ. and Constitution Ranking.
   u8g2.print(grades[iq]);
   u8g2.print("-"); 
   u8g2.print(grades[constitution]); 
   
-  ////readSpriteFromEEPROM(6,int(is_female)*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
-  u8g2.drawXBM( 72, 14, 10, 10, bits_buff);
-  ////readSpriteFromEEPROM(6,(main_char+2)*BIG_SPRITE_BYTES,BIG_SPRITE_BYTES);
-  u8g2.drawXBM( 72, 26, 10, 10, bits_buff);
+  readSpriteFromEEPROM(6,15+int(is_female));
+  u8g2.drawXBM( 72, 20, 8, 8, loaded_sprite);
+  readSpriteFromEEPROM(6,17+main_char);
+  u8g2.drawXBM( 72, 29, 8, 8, loaded_sprite);
   
 }
 
@@ -124,15 +124,15 @@ void draw_status(){
   u8g2.print("agxo");
   u8g2.setCursor(63, 12);
   u8g2.print("peza");
-  u8g2.setCursor(3, 25);
+  u8g2.setCursor(3, 24);
   u8g2.print("gxoja");
   u8g2.setCursor(39, 29);
   u8g2.print("sana");
   //Draw Lines
   u8g2.drawLine(2, 20, 2, 23);
   u8g2.drawLine(3, 23, 33, 23);
-  u8g2.drawLine(2, 34, 2, 37);
-  u8g2.drawLine(3, 37, 33, 37);
+  u8g2.drawLine(2, 33, 2, 36);
+  u8g2.drawLine(3, 36, 33, 36);
   //draw Boxes
   u8g2.drawRFrame(37,13,23,16,3);
   u8g2.drawRFrame(61,13,23,16,3);
@@ -140,19 +140,19 @@ void draw_status(){
   bar_level = conv255(hungry,30);
   u8g2.drawBox(4,20,bar_level,2);
   bar_level = conv255(joy,30);
-  u8g2.drawBox(4,34,bar_level,2);
+  u8g2.drawBox(4,33,bar_level,2);
   //Draw Numbers
   u8g2.setCursor(41, 20);
   u8g2.print(age);
   u8g2.setCursor(65, 20);
   u8g2.print(weight);
   //Draw Hearts
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6),2)], 7);
-  u8g2.drawXBM( 60, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-2,2)], 7);
-  u8g2.drawXBM( 68, 31, 7, 7, bits_buff);
-  memcpy_P(bits_buff, hearts[delta(conv255(health,6)-4,2)], 7);
-  u8g2.drawXBM( 76, 31, 7, 7, bits_buff);
+  readSpriteFromEEPROM(6,21+delta(conv255(health,6),2));
+  u8g2.drawXBM( 60, 30, 8, 8, loaded_sprite);
+  readSpriteFromEEPROM(6,21+delta(conv255(health,6)-2,2));
+  u8g2.drawXBM( 68, 30, 8, 8, loaded_sprite);
+  readSpriteFromEEPROM(6,21+delta(conv255(health,6)-4,2));
+  u8g2.drawXBM( 76, 30, 8, 8, loaded_sprite);
 
 }
 
