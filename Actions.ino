@@ -41,16 +41,16 @@ void time_actions(int time_unit){
 }
 
 int process_animation(){
-  animation_mark = animation_mark == 0?1:0;
-  animation_loop--;
-  if (animation_loop < 0){
+  if (first_animation) animation_loop--;
+  first_animation = !first_animation; //change to the other animation
+  if (animation_loop <= 0){
     change_animation(0);  
   }
   redraw = true; 
 }
 
 void change_animation(int index){
-  animation_loop = 5*delta(index,1); //repeat the animation 5 loops
+  animation_loop = 5; //repeat the animation 5 loops
   animation_offset = index;
 }
 
@@ -92,7 +92,7 @@ void eat_food(int index){
   }else{
     weight += index*2;
   }
-
+  change_animation(1);
 }
 
 void change_settings(int index){

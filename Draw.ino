@@ -29,7 +29,7 @@ void draw_menu(int pointer){
     //load sprites from EEPROM
     readSpriteFromEEPROM(6,i+1);
     //print each menu option visible
-    u8g2.drawXBM( (i-offset)*10+1, 1, 8, 8, loaded_sprite);
+    u8g2.drawXBM( (i-offset)*10+1, 1, SPRITE_SIZE, SPRITE_SIZE, loaded_sprite);
     //restore drawing color
     u8g2.setDrawColor(1);
   }
@@ -40,7 +40,6 @@ void draw_virbes(){
   const short x= 42;
   const short y= 17;
   //draw body
-  short anim_off_set = animation_mark;
   short prev_offset = 0;
   short prev_lenght = 0;
   short prev_fpo = 0;
@@ -50,7 +49,7 @@ void draw_virbes(){
   for (j=0; j < 18; j++){
     short lenght = 0;
     short off_set = 0;
-    byte row = pgm_read_byte(&(lex[anim_off_set][j]));
+    byte row = pgm_read_byte(&(lex[int(first_animation)][j]));
     //read first 5 bits
     for (short i = 0; i < 5; i++){
       lenght += bitRead(row,7-i)*pows[i];
@@ -75,10 +74,20 @@ void draw_virbes(){
   u8g2.drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
   //draw face
   u8g2.setBitmapMode(1);
-  anim_off_set = (animation_offset*2)+animation_mark;
-  memcpy_P(bits_buff, lex_face[anim_off_set], 7);
-  u8g2.drawXBM( 40, 23, 7, 7, bits_buff);
+  memcpy_P(bits_buff, lex_face[(animation_offset*2)+int(first_animation)], SPRITE_SIZE);
+  u8g2.drawXBM( 40, 23, SPRITE_SIZE, SPRITE_SIZE, bits_buff);
   u8g2.setBitmapMode(0);
+  //draw hands
+  signed char hand_y_off_R = 8+int(first_animation);
+  signed char hand_y_off_L = 8+int(first_animation);
+  signed char hand_x_off_R = -9;
+  signed char hand_x_off_L = +8;
+  u8g2.setDrawColor(0);
+  u8g2.drawBox(x+hand_x_off_R,y+hand_y_off_R,5,5); 
+  u8g2.drawBox(x+hand_x_off_L,y+hand_y_off_L,5,5); 
+  u8g2.setDrawColor(1);
+  u8g2.drawRFrame(x+hand_x_off_R,y+hand_y_off_R,5,5,1);
+  u8g2.drawRFrame(x+hand_x_off_L,y+hand_y_off_L,5,5,1);
 }
 
 //draw the data of virbes
@@ -168,6 +177,12 @@ void draw_foods(int pointer){
   //draw rectangle arround selected option
   u8g2.drawRFrame(3+16*(pointer-offset),19,14,14,2);
 }
+
+void draw_play(){
+  //depending on the animation cycle draw a ball in the screen 
+}
+
+/**********************************************************/
 
 //Options draw function
 void draw_options(int pointer){

@@ -25,7 +25,7 @@ void writeByteToEEPROM(byte block, byte address, byte data){
   Wire.write(address);
   Wire.write(data);
   Wire.endTransmission(true);
-  delay(10);
+  delay(5);
 }
 
 void readSpriteFromEEPROM(byte block, byte position){

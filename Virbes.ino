@@ -12,7 +12,7 @@
 #define BIG_SPRITE_BYTES 20
 #define SMALL_SPRITE_BYTES 7
 
-#define BUTTON_TIMEOUT 70
+#define BUTTON_TIMEOUT 200
 
 //PIN constants definition 
 #define CLOCK_PIN 13
@@ -21,10 +21,12 @@
 #define CE_PIN 9
 #define RESET_PIN 8
 
-#define BL_PIN 3
+#define BUZZ_PIN 7
 #define BTN_A_PIN 6
 #define BTN_B_PIN 5
 #define BTN_C_PIN 4
+#define BL_PIN 3
+
 
 #define SCL_PIN A5
 #define SDA_PIN A4
@@ -66,15 +68,15 @@ static const char evolution_names[][8] = { "ovo", "infano", "juna", "matura", "m
 static const char grades[] = {'D','C','B','A','S' };
 
 //Global Variables
-byte loaded_sprite[SPRITE_SIZE];                //space where the sprites read from eeprom are saved
+byte loaded_sprite[SPRITE_SIZE];                //space where the sprites read from eeprom are saved0.
 //old
 bool redraw = true;                             //indicates the need of draw again the view
 unsigned long up_time = 0;                      //time elapsed since turn-on
 bool time_flags [5];                            //flags for time dependant actions
 unsigned char bits_buff[BIG_SPRITE_BYTES];      //menu sprite buffer variable
 unsigned char selected_bits[BIG_SPRITE_BYTES];  //temporal sprite of selected menu option
-byte animation_mark = 0;                        //temp mark to know what sprite to draw
-byte animation_loop = 0;                        //number of times to repeat the animation before go back to standby
+bool first_animation = true;                    //temp mark to know what sprite to draw
+signed char animation_loop = 0;                 //number of times to repeat the animation before go back to standby
 byte animation_offset = 0;                      //the current animation
 byte selected = 0;                              //current menu option selected
 byte sub_selected = 0;                          //for sub menus, the selected option
@@ -98,7 +100,7 @@ byte evolution = 4;     //0:ovo, 1:infano, 2:juna, 3:matura, 4:maljuna
 byte iq = 3;            //max 4
 byte constitution = 0;  //max 4
 bool is_female= false;  //else male
-byte main_char = 2;     //0:disciplined 1:glutton 2:introvert 3:playful
+byte main_char = 0;     //0:disciplined 1:glutton 2:introvert 3:playful
 
 //status variables
 byte hungry = 30;       // max: 255
@@ -117,6 +119,7 @@ void setup() {
   u8g2.begin();
   u8g2.setContrast(contrast);
   u8g2.setDisplayRotation(U8G2_R2);
+  tone(BUZZ_PIN, 440, 500); 
 }
 
 void loop() {
@@ -170,12 +173,15 @@ void loop() {
         select_menu_option();
         break;
       case 4:
-        if (sub_selected > 0) {
-          eat_food(sub_selected); //0 is the back action
-          change_animation(1);
+        if (sub_selected > 0) { //0 is the back action
+          eat_food(sub_selected);           
         }
         back_to_main();
         break;
+      case 5:
+        change_animation(0);
+        back_to_main();
+      break;
       case 14:
         change_settings(sub_selected);
         break;
@@ -210,31 +216,38 @@ void draw() {
   redraw = false;
   switch (mode){
   case 0:
+    //initial screen
     draw_initial();
     break;
   case 1:
+    //home
     draw_menu(selected);
     draw_virbes();
     draw_help();
     break;
   case 2:
+    //data info
     draw_menu(selected);
     draw_data();
     draw_help();
     break;
   case 3:
+    //status info
     draw_menu(selected);
     draw_status();
     draw_help();
     break;
   case 4:
+    //foods
     draw_menu(selected);
     draw_foods(sub_selected);
     draw_help();
     break;
   case 5:
+    //play
     draw_menu(selected);
     change_animation(2);
+    draw_play();
     draw_virbes();
     draw_help();
     break;
