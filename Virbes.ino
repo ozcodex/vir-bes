@@ -12,9 +12,17 @@
 #define BIG_SPRITE_BYTES 20
 #define SMALL_SPRITE_BYTES 7
 
+//Time related Constants
 #define BUTTON_TIMEOUT 200
 
-//PIN constants definition 
+//Sound Constants
+#define MAX_NOTES 30
+#define TEMPO 120
+#define OCTAVE 5
+#define INITIAL_TONE 32.7 //This note (C1) inticates the start of the notes count 
+#define NOTE_TIME_FACTOR 0.8 // how long of note duration wil be the tone audible
+
+//PIN Constants 
 #define CLOCK_PIN 13
 #define DATA_PIN 11
 #define DC_PIN 10
@@ -35,8 +43,8 @@
 U8G2_PCD8544_84X48_2_4W_HW_SPI u8g2 = 
   U8G2_PCD8544_84X48_2_4W_HW_SPI(U8G2_R0, CE_PIN, DC_PIN, RESET_PIN);
 
-//Names of menu options, the sprites are located on sprites.h
-static const char menu_names[][9] = {
+//Names of menu options
+const char menu_names[][9] = {
   "cxefa",
   "datumoj",
   "stato",
@@ -52,7 +60,7 @@ static const char menu_names[][9] = {
   "posxto",
   "agordo"
   };
-static const char food_names[][11] = { 
+const char food_names[][11] = { 
   "nuligi",
   "pomo",
   "supo",
@@ -64,17 +72,21 @@ static const char food_names[][11] = {
   "tasokuko"
   };
 
-static const char evolution_names[][8] = { "ovo", "infano", "juna", "matura", "maljuna" };
-static const char grades[] = {'D','C','B','A','S' };
+const char evolution_names[][8] = { "ovo", "infano", "juna", "matura", "maljuna" };
+const char grades[] = {'D','C','B','A','S' };
+
+const int beat_duration = 60000 / TEMPO; //in millisecs
 
 //Global Variables
-byte loaded_sprite[SPRITE_SIZE];                //space where the sprites read from eeprom are saved0.
-//old
+byte loaded_sprite[SPRITE_SIZE];                //memory space where the sprites read from eeprom are saved.
+byte song_buff[MAX_NOTES+1];                    //memory space for the current song (notes, plus duration)
+byte note_counter = 0;
+unsigned long last_note_time = 0;               //milliseconds when the last note was played
+int note_duration = 0;                          //time to wait while a note is playing
 bool redraw = true;                             //indicates the need of draw again the view
 unsigned long up_time = 0;                      //time elapsed since turn-on
 bool time_flags [5];                            //flags for time dependant actions
 unsigned char bits_buff[BIG_SPRITE_BYTES];      //menu sprite buffer variable
-unsigned char selected_bits[BIG_SPRITE_BYTES];  //temporal sprite of selected menu option
 bool first_animation = true;                    //temp mark to know what sprite to draw
 signed char animation_loop = 0;                 //number of times to repeat the animation before go back to standby
 byte animation_offset = 0;                      //the current animation
@@ -82,6 +94,7 @@ byte selected = 0;                              //current menu option selected
 byte sub_selected = 0;                          //for sub menus, the selected option
 bool pull_down[] = {false,false,false};
 int btn_clk_counter[] = {0,0,0};
+
 //configuration variables
 bool backlight = true;                          //status of backlight
 byte contrast = 135;
@@ -92,6 +105,7 @@ int mode = 0;   /* stage of game:
                  * 3: food view
                  * 11: settings
                  */
+                 
 //Virbes data:
 //char definition
 char name[] = "LEX";
@@ -114,16 +128,18 @@ void setup() {
   pinMode(BTN_A_PIN, INPUT_PULLUP);
   pinMode(BTN_B_PIN, INPUT_PULLUP);
   pinMode(BTN_C_PIN, INPUT_PULLUP); 
-  Serial.begin(9600);
-  setupEEPROM(); 
+  setupEEPROM();
+  //Setup the graphics 
   u8g2.begin();
   u8g2.setContrast(contrast);
   u8g2.setDisplayRotation(U8G2_R2);
-  tone(BUZZ_PIN, 440, 500); 
+  //Load the song 0 (silence) to initialize the sound 
+  load_song(1);
 }
 
 void loop() {
   up_time = millis(); //caution: max=429767295 (7 days 17 hours)
+  play_sound();
   //Write the backlight status
   digitalWrite(BL_PIN, backlight?HIGH:LOW);
   //Configure graphics
@@ -165,6 +181,7 @@ void loop() {
     redraw = true;
     switch (mode){
       case 0:
+        load_song(2);
         back_to_main();
         break;
       case 1:

@@ -5,6 +5,13 @@ int delta(int number,int limit){
   return number;
 }
 
+//apply bit shift to the right and then the mask (in that order)
+byte bitmask(byte input, byte mask, byte shift){
+  byte result = (input >> shift) & mask;
+  return result;
+}
+
+
 //Turn a 255 integer in a range specific integer
 int conv255(int input, int maxim){
   int out = (input*(maxim + 1))/255; // this should be kept as integer
