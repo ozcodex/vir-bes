@@ -9,7 +9,7 @@ void select_menu_option(){
   mode = selected + 1;
   switch(mode){
     case 5:
-      play();
+      play_action();
      break;
   }
 }
@@ -101,7 +101,7 @@ void eat_food(int index){
   change_animation(1);
 }
 
-void play(){
+void play_action(){
     change_animation(2);
     joy += 32;
   }

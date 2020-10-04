@@ -199,7 +199,7 @@ void loop() {
         back_to_main();
         break;
       case 5:
-        select_menu_option();
+        back_to_main();
       break;
       case 14:
         change_settings(sub_selected);
