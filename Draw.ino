@@ -37,57 +37,28 @@ void draw_menu(int pointer){
 
 //virbes draw
 void draw_virbes(){
-  const short x= 42;
-  const short y= 17;
+  byte x= 30;
+  byte y= 17;
+  //define address of body
+  byte addrs = (animation_offset+int(first_animation))*(BIG_SPRITE_BYTES+1);
+  //read offset 
+  byte sprite_offset = pgm_read_byte_near(block5 + addrs);
+  // separete the two halfs of the byte
+  signed char x_off = (bitmask(sprite_offset,B0001,7))?-1:1;
+  x_off = x_off*(bitmask(sprite_offset,B0111,4));
+  signed char y_off = (bitmask(sprite_offset,B0001,3))?-1:1;
+  y_off = y_off*(bitmask(sprite_offset,B0111,0));
+  // apply the offsets
+  x = x + x_off;
+  y = y + y_off;
   //draw body
-  short prev_offset = 0;
-  short prev_lenght = 0;
-  short prev_fpo = 0;
-  short prev_lpo = 0;
-  short pows[] = {16,8,4,2,1};
-  short j;
-  for (j=0; j < 18; j++){
-    short lenght = 0;
-    short off_set = 0;
-    byte row = pgm_read_byte(&(lex[int(first_animation)][j]));
-    //read first 5 bits
-    for (short i = 0; i < 5; i++){
-      lenght += bitRead(row,7-i)*pows[i];
-    }
-    if (lenght == 0) continue; //skip round
-    off_set = (bitRead(row,2)?-1:1)*(2*bitRead(row,1)+bitRead(row,0))+prev_offset;
-    short first_point_offset = -1*floor(lenght / 2)+off_set;
-    u8g2.drawPixel(x+first_point_offset, y+j);
-    short last_point_offset = first_point_offset + lenght;
-    u8g2.drawPixel(x+last_point_offset, y+j);
-    //fill spaces
-    if (abs(first_point_offset - prev_fpo) >= 2) u8g2.drawLine(x+min(first_point_offset,prev_fpo), y+j, x+max(first_point_offset,prev_fpo), y+j);
-    if (abs(last_point_offset - prev_lpo) >= 2) u8g2.drawLine(x+min(last_point_offset,prev_lpo), y+j, x+max(last_point_offset,prev_lpo), y+j);
-    
-    //save previous values
-    prev_offset = off_set;
-    prev_lenght = lenght;
-    prev_fpo = first_point_offset;
-    prev_lpo = last_point_offset;
-  }
-  //after finish draw a line between the points
-  u8g2.drawLine(x+prev_fpo, y+j, x+prev_lpo, y+j);
+  memcpy_P(bits_buff, &block5[addrs+1], BIG_SPRITE_BYTES);
+  u8g2.drawXBM( x, y, BIG_SPRITE_W, BIG_SPRITE_H, bits_buff);
   //draw face
   u8g2.setBitmapMode(1);
   memcpy_P(bits_buff, lex_face[(animation_offset*2)+int(first_animation)], SPRITE_SIZE);
-  u8g2.drawXBM( 40, 23, SPRITE_SIZE, SPRITE_SIZE, bits_buff);
+  u8g2.drawXBM( x+5, y+4, SPRITE_SIZE, SPRITE_SIZE, bits_buff);
   u8g2.setBitmapMode(0);
-  //draw hands
-  signed char hand_y_off_R = 8+int(first_animation);
-  signed char hand_y_off_L = 8+int(first_animation);
-  signed char hand_x_off_R = -9;
-  signed char hand_x_off_L = +8;
-  u8g2.setDrawColor(0);
-  u8g2.drawBox(x+hand_x_off_R,y+hand_y_off_R,5,5); 
-  u8g2.drawBox(x+hand_x_off_L,y+hand_y_off_L,5,5); 
-  u8g2.setDrawColor(1);
-  u8g2.drawRFrame(x+hand_x_off_R,y+hand_y_off_R,5,5,1);
-  u8g2.drawRFrame(x+hand_x_off_L,y+hand_y_off_L,5,5,1);
 }
 
 //draw the data of virbes

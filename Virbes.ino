@@ -9,7 +9,9 @@
 
 //Sprite Sizes
 #define SPRITE_SIZE 8
-#define BIG_SPRITE_BYTES 63
+#define BIG_SPRITE_W 21
+#define BIG_SPRITE_H 18
+#define BIG_SPRITE_BYTES 54
 #define SMALL_SPRITE_BYTES 7
 
 //Time related Constants
