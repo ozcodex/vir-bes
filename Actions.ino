@@ -1,7 +1,7 @@
 void back_to_main(){
   mode = 1;
   selected = 0;
-  change_animation(0);
+  //change_animation(0);
 }
 
 void select_menu_option(){

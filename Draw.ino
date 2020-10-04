@@ -40,7 +40,7 @@ void draw_virbes(){
   byte x= 30;
   byte y= 17;
   //define address of body
-  byte addrs = (animation_offset+int(first_animation))*(BIG_SPRITE_BYTES+1);
+  byte addrs = ((animation_offset*2)+int(first_animation))*(BIG_SPRITE_BYTES+1);
   //read offset 
   byte sprite_offset = pgm_read_byte_near(block5 + addrs);
   // separete the two halfs of the byte

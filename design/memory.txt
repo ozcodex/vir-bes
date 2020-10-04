@@ -3,8 +3,8 @@ the eeprom device used is 24lc16b, this have 8 blocks of 256 bytes each
 the sprites of size 8x8 use 8 bytes (64 bits)
 a block can store exactly 32 normal (8x8) sprites
 
-the body sprites, of size 18x21 use 63 bytes
-but have one byte at begining for the offsets, for a total of 64 bytes.
+the body sprites, of size 18x21 use 54 bytes
+but have one byte at begining for the offsets, for a total of 55 bytes.
 a block can store exactly 4 body sprites.
 the offset byte is divided in x,y (MSB,LSB) and can be from -7 to +7 
 
@@ -56,10 +56,6 @@ Food: 8 Sprites
 The Block #5 will contain virbes body sprite as:
 
         0 : offset standby 1
-  1 -  63 : standby 1 sprite
-       64 : offset standby 2
- 65 - 127 : standby 2 sprite
-      128 : offset eat 1
-129 - 191 : eat 1 sprite
-      192 : offset eat 2
-193 - 255 : eat 2 sprite
+  1 -  54 : standby 1 sprite
+       55 : offset standby 2
+
