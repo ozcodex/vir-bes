@@ -1,11 +1,17 @@
 void back_to_main(){
   mode = 1;
   selected = 0;
+  change_animation(0);
 }
 
 void select_menu_option(){
   sub_selected = 0;
   mode = selected + 1;
+  switch(mode){
+    case 5:
+      play();
+     break;
+  }
 }
 
 //Trigger temporal related functions
@@ -94,6 +100,11 @@ void eat_food(int index){
   }
   change_animation(1);
 }
+
+void play(){
+    change_animation(2);
+    joy += 32;
+  }
 
 void change_settings(int index){
   if (index == 0) backlight = !backlight;

@@ -221,6 +221,7 @@ void draw_help(){
     case 1:
     case 2:
     case 3:
+    case 5:
       u8g2.print(menu_names[selected]);
       break;
     case 4:

@@ -9,7 +9,7 @@
 
 //Sprite Sizes
 #define SPRITE_SIZE 8
-#define BIG_SPRITE_BYTES 20
+#define BIG_SPRITE_BYTES 63
 #define SMALL_SPRITE_BYTES 7
 
 //Time related Constants
@@ -17,7 +17,7 @@
 
 //Sound Constants
 #define MAX_NOTES 30
-#define TEMPO 120
+#define TEMPO 160
 #define OCTAVE 5
 #define INITIAL_TONE 32.7 //This note (C1) inticates the start of the notes count 
 #define NOTE_TIME_FACTOR 0.8 // how long of note duration wil be the tone audible
@@ -158,7 +158,7 @@ void loop() {
   //Read buttons
   read_buttons();
 
-  //Trigger Button A Action
+  //Trigger Button A Action (Move LEFT)
   if (pull_down[0] && btn_clk_counter[0] == 1){
     redraw = true;
     switch (mode){
@@ -168,6 +168,7 @@ void loop() {
       case 1:
       case 2:
       case 3:
+      case 5:
         selected = rotate_sel_L(0,selected);
         break;
       case 4:
@@ -176,7 +177,7 @@ void loop() {
         break;
     }
   }
-  //Trigger Button B Action
+  //Trigger Button B Action (Execute)
   if (pull_down[1]  && btn_clk_counter[1] == 1){
     redraw = true;
     switch (mode){
@@ -196,8 +197,7 @@ void loop() {
         back_to_main();
         break;
       case 5:
-        change_animation(0);
-        back_to_main();
+        select_menu_option();
       break;
       case 14:
         change_settings(sub_selected);
@@ -205,7 +205,7 @@ void loop() {
       
     } 
   }
-  //Trigger Button C Action
+  //Trigger Button C Action (Move Right)
   if (pull_down[2]  && btn_clk_counter[2] == 1){
     redraw = true;
     switch (mode){
@@ -215,6 +215,7 @@ void loop() {
       case 1:
       case 2:
       case 3:
+      case 5:
         selected = rotate_sel_R(MENU_LENGTH - 1,selected);
         break;
       case 4:
@@ -263,7 +264,6 @@ void draw() {
   case 5:
     //play
     draw_menu(selected);
-    change_animation(2);
     draw_play();
     draw_virbes();
     draw_help();
